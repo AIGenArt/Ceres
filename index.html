@@ -10,288 +10,224 @@
 <title>Graviditetsjournal</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap');
-
-:root {
-  --rose:       #e8899a;
-  --rose-deep:  #c25068;
-  --rose-pale:  #fce8ee;
-  --blush:      #fdf3f5;
-  --ink:        #1e1018;
-  --ink2:       #5a4450;
-  --muted:      #9a8490;
-  --border:     #ecdde2;
-  --card:       #ffffff;
-  --good:       #4fa882;
-  --good-pale:  #e8f7f0;
-  --warn:       #c8974a;
-  --purple:     #9b6b9e;
-  --safe-top:   env(safe-area-inset-top,    59px);
-  --safe-bot:   env(safe-area-inset-bottom, 34px);
+:root{
+  --rose:#e8899a;--rose-deep:#c25068;--rose-pale:#fce8ee;
+  --blush:#fdf3f5;--ink:#1e1018;--ink2:#5a4450;--muted:#9a8490;
+  --border:#ecdde2;--card:#fff;--good:#4fa882;--good-pale:#e8f7f0;
+  --warn:#c8974a;--safe-top:env(safe-area-inset-top,59px);--safe-bot:env(safe-area-inset-bottom,34px);
 }
-
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{font-size:16px;}
-body{
-  background:var(--blush);color:var(--ink);
-  font-family:'DM Mono',monospace;font-weight:300;
-  -webkit-font-smoothing:antialiased;min-height:100dvh;overflow-x:hidden;
-}
+body{background:var(--blush);color:var(--ink);font-family:'DM Mono',monospace;font-weight:300;-webkit-font-smoothing:antialiased;min-height:100dvh;overflow-x:hidden;}
 
-/* ── HERO ── */
-.hero{
-  position:relative;z-index:2;
-  background:linear-gradient(155deg,#1e1018 0%,#3d1428 50%,#6b2840 100%);
-  padding:calc(var(--safe-top) + 16px) 20px 24px;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 90% 10%,rgba(232,137,154,.25) 0%,transparent 50%),
-    radial-gradient(ellipse at 5% 90%,rgba(155,107,158,.15) 0%,transparent 50%);
-}
+/* HERO */
+.hero{position:relative;z-index:2;background:linear-gradient(155deg,#1e1018 0%,#3d1428 50%,#6b2840 100%);padding:calc(var(--safe-top) + 16px) 20px 22px;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 90% 10%,rgba(232,137,154,.25) 0%,transparent 50%),radial-gradient(ellipse at 5% 90%,rgba(155,107,158,.15) 0%,transparent 50%);}
 .hero-inner{position:relative;}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
 .hero-eye{font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:4px;}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:#fff;line-height:.95;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#fff;line-height:.95;}
 .hero-title em{font-style:italic;color:var(--rose);}
-.hero-right{text-align:right;}
-.hero-week{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--rose);line-height:1;}
-.hero-week-lbl{font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:2px;}
+.hero-right{text-align:right;cursor:pointer;}
+.hero-week-val{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--rose);line-height:1;}
+.hero-week-lbl{font-size:.38rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:2px;}
+.hero-week-edit{font-size:.38rem;color:rgba(232,137,154,.6);letter-spacing:.06em;margin-top:1px;}
 
-.nurse-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(79,168,130,.18);border:1px solid rgba(79,168,130,.32);
-  border-radius:20px;padding:6px 12px;margin-bottom:14px;
-}
+/* Inline GA editor */
+.ga-edit-row{display:none;gap:6px;align-items:center;margin-top:6px;}
+.ga-edit-row.show{display:flex;}
+.ga-inp{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 10px;font-family:'DM Mono',monospace;font-size:.6rem;color:#fff;width:56px;text-align:center;outline:none;}
+.ga-sep{color:rgba(255,255,255,.5);font-size:.8rem;}
+.ga-btn{background:var(--rose-deep);border:none;border-radius:8px;padding:6px 12px;font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;cursor:pointer;}
+.ga-btn.cancel{background:rgba(255,255,255,.15);}
+
+.nurse-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(79,168,130,.18);border:1px solid rgba(79,168,130,.32);border-radius:20px;padding:6px 12px;margin-bottom:12px;}
 .npulse{width:6px;height:6px;border-radius:50%;background:var(--good);animation:pulse 2s infinite;flex-shrink:0;}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(79,168,130,.2)}50%{box-shadow:0 0 0 5px rgba(79,168,130,.07)}}
-.npill-txt{font-size:.48rem;letter-spacing:.06em;color:#a8e6cc;line-height:1.3;}
+.npill-txt{font-size:.46rem;letter-spacing:.06em;color:#a8e6cc;line-height:1.3;}
 .npill-txt strong{color:#6dd4a8;font-weight:500;}
 
-/* HCG strip */
 .hstrip{display:flex;gap:6px;}
 .hm{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 6px;text-align:center;}
 .hm.proj{background:rgba(79,168,130,.18);border-color:rgba(79,168,130,.28);}
-.hm-v{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;color:#fff;line-height:1;}
+.hm-v{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:#fff;line-height:1;}
 .hm.proj .hm-v{color:#6dd4a8;}
-.hm-u{font-size:.34rem;color:rgba(255,255,255,.35);letter-spacing:.06em;margin-top:1px;text-transform:uppercase;}
-.hm-d{font-size:.38rem;color:rgba(255,255,255,.45);margin-top:3px;}
+.hm-u{font-size:.33rem;color:rgba(255,255,255,.35);letter-spacing:.06em;margin-top:1px;text-transform:uppercase;}
+.hm-d{font-size:.37rem;color:rgba(255,255,255,.45);margin-top:3px;}
 .harrow{display:flex;align-items:center;color:var(--rose);font-size:.85rem;flex-shrink:0;align-self:center;}
 
-/* ── BOTTOM NAV ── */
-.bnav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(255,255,255,.92);backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  padding:8px 0 calc(var(--safe-bot) + 2px);
-  display:flex;
-}
-.bnav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  border:none;background:none;cursor:pointer;padding:4px 0;
-}
-.bnav-icon{font-size:1.25rem;line-height:1;}
-.bnav-lbl{font-family:'DM Mono',monospace;font-size:.38rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 calc(var(--safe-bot) + 2px);display:flex;}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;cursor:pointer;padding:4px 0;}
+.bnav-icon{font-size:1.2rem;line-height:1;}
+.bnav-lbl{font-family:'DM Mono',monospace;font-size:.36rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
 .bnav-btn.active .bnav-lbl{color:var(--rose-deep);}
-.bnav-btn.active .bnav-icon{filter:none;}
 
-/* ── SCROLL BODY ── */
-.scroll-body{
-  padding:14px 15px calc(var(--safe-bot) + 80px);
-  position:relative;z-index:1;
-}
-.panel{display:none;}
-.panel.active{display:block;}
+/* SCROLL BODY */
+.scroll-body{padding:12px 14px calc(var(--safe-bot) + 76px);}
+.panel{display:none;}.panel.active{display:block;}
+.sec{font-size:.41rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:16px 0 7px;}
 
-/* ── SECTION HEADER ── */
-.sec{font-size:.42rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px;}
+/* COLLAPSIBLE */
+.coll-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:13px 14px;user-select:none;}
+.coll-title{font-size:.45rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.coll-chevron{font-size:.7rem;color:var(--muted);transition:transform .25s;}
+.coll-chevron.open{transform:rotate(180deg);}
+.coll-body{overflow:hidden;transition:max-height .3s ease;max-height:0;}
+.coll-body.open{max-height:2000px;}
+.coll-inner{padding:0 14px 14px;}
 
-/* ── CARDS ── */
+/* CARDS */
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;box-shadow:0 1px 10px rgba(28,16,24,.05);}
-.cp{padding:14px;}
-.ct{font-size:.42rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.cp{padding:13px;}
+.ct{font-size:.41rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;}
 
-/* ── STAT ROW ── */
-.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 8px;text-align:center;position:relative;overflow:hidden;}
+/* STAT ROW */
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 7px;text-align:center;position:relative;overflow:hidden;}
 .stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose-deep),var(--rose));border-radius:0 0 12px 12px;}
-.sv{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--ink);line-height:1;}
-.su{font-size:.38rem;color:var(--muted);margin-top:2px;}
-.sl{font-size:.38rem;color:var(--muted);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;}
-.stag{position:absolute;top:6px;right:6px;font-size:.36rem;letter-spacing:.07em;text-transform:uppercase;padding:2px 5px;border-radius:6px;}
+.sv{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;color:var(--ink);line-height:1;}
+.su{font-size:.37rem;color:var(--muted);margin-top:2px;}
+.sl{font-size:.37rem;color:var(--muted);margin-top:4px;letter-spacing:.06em;text-transform:uppercase;}
+.stag{position:absolute;top:6px;right:6px;font-size:.35rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:6px;}
 .tok{background:rgba(79,168,130,.12);color:var(--good);}
 .tlo{background:rgba(194,80,104,.1);color:var(--rose-deep);}
+.twarn{background:rgba(200,151,74,.12);color:var(--warn);}
 
-/* ── INPUTS ── */
-.igrp{margin-bottom:10px;}
-.ilbl{font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
-.inp{
-  width:100%;background:#faf3f5;border:1px solid var(--border);border-radius:10px;
-  padding:11px 12px;font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink);
-  -webkit-appearance:none;outline:none;transition:border-color .2s;
-}
+/* INPUTS */
+.igrp{margin-bottom:9px;}
+.ilbl{font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
+.inp{width:100%;background:#faf3f5;border:1px solid var(--border);border-radius:10px;padding:10px 11px;font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink);-webkit-appearance:none;outline:none;transition:border-color .2s;}
 .inp:focus{border-color:var(--rose);background:#fff;}
 .inp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .inp-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
 
-/* Buttons */
-.btn-p{
-  width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--rose));
-  border:none;border-radius:12px;padding:13px;font-family:'DM Mono',monospace;
-  font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;
-  cursor:pointer;margin-top:6px;box-shadow:0 4px 14px rgba(194,80,104,.28);
-}
-.btn-s{
-  width:100%;background:var(--card);border:1px solid var(--border);
-  border-radius:10px;padding:10px;font-family:'DM Mono',monospace;
-  font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--rose-deep);cursor:pointer;
-}
+/* BUTTONS */
+.btn-p{width:100%;background:linear-gradient(135deg,var(--rose-deep),var(--rose));border:none;border-radius:12px;padding:12px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;cursor:pointer;margin-top:5px;box-shadow:0 4px 14px rgba(194,80,104,.25);}
+.btn-s{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px;font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.08em;text-transform:uppercase;color:var(--rose-deep);cursor:pointer;}
 
-/* Measurement rows */
-.mlist{display:flex;flex-direction:column;gap:7px;margin-bottom:8px;}
-.mrow{display:grid;grid-template-columns:1fr 1fr 34px;gap:6px;align-items:center;}
-.mdel{width:34px;height:34px;border-radius:8px;background:#faf3f5;border:1px solid var(--border);color:var(--muted);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+/* MEASUREMENT ROWS */
+.mlist{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.mrow{display:grid;grid-template-columns:1fr 1fr 32px;gap:5px;align-items:center;}
+.mdel{width:32px;height:32px;border-radius:8px;background:#faf3f5;border:1px solid var(--border);color:var(--muted);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-/* ── CHART ── */
-.chart-wrap{padding:14px 12px 10px;}
+/* CHART */
+.chart-wrap{padding:13px 11px 10px;}
 svg.chart{width:100%;height:auto;display:block;overflow:visible;}
-.legend{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;}
-.leg-item{display:flex;align-items:center;gap:5px;font-size:.4rem;color:var(--muted);}
-.leg-line{width:16px;height:2px;border-radius:2px;}
-.leg-dash{width:16px;height:0;border-top:2px dashed #4fa882;}
+.legend{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap;}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:.38rem;color:var(--muted);}
+.leg-line{width:14px;height:2px;border-radius:2px;}
 
-/* ── PROJECTION TABLE ── */
+/* PROJECTION TABLE */
 .ptable{width:100%;border-collapse:collapse;}
-.ptable th{font-size:.4rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:4px 6px;border-bottom:1px solid var(--border);}
-.ptable td{font-size:.52rem;color:var(--ink2);padding:5px 6px;border-bottom:1px solid #faf3f5;}
+.ptable th{font-size:.38rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;padding:4px 5px;border-bottom:1px solid var(--border);}
+.ptable td{font-size:.5rem;color:var(--ink2);padding:5px 5px;border-bottom:1px solid #faf3f5;}
 .ptable tr:last-child td{border-bottom:none;}
-.ptable td.hv{color:var(--rose-deep);font-size:.56rem;}
-.ptable tr.today td{background:rgba(79,168,130,.06);}
-.ptable tr.today td.hv{color:var(--good);}
+.ptable td.hv{color:var(--rose-deep);font-size:.54rem;font-weight:400;}
+.ptable tr.t-measured td{background:rgba(194,80,104,.04);}
+.ptable tr.t-today td{background:rgba(79,168,130,.07);}
+.ptable tr.t-today td.hv{color:var(--good);}
+.ptable td.wl{color:var(--muted);font-size:.42rem;}
 .tdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--good);margin-right:4px;vertical-align:middle;}
-.ptable td.week-lbl{color:var(--muted);font-size:.44rem;}
+.mmark{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--rose-deep);margin-right:4px;vertical-align:middle;}
+.ptable td.status{font-size:.38rem;color:var(--muted);}
 
-/* ── WEEK TRACK ── */
-.wtrack{display:flex;gap:4px;margin-bottom:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+/* WEEK TRACK */
+.wtrack{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:3px;margin-bottom:5px;}
 .wtrack::-webkit-scrollbar{display:none;}
-.ws{
-  flex-shrink:0;width:36px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.4rem;letter-spacing:.04em;color:var(--muted);background:#f5eef1;
-}
+.ws{flex-shrink:0;width:34px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.38rem;color:var(--muted);background:#f5eef1;}
 .ws.past{background:#f0e8ec;color:#ccc;}
-.ws.now{
-  background:linear-gradient(135deg,var(--rose-deep),var(--rose));
-  color:#fff;font-weight:500;box-shadow:0 3px 10px rgba(194,80,104,.3);
-  font-size:.44rem;width:40px;
-}
-.ws.future-scan{background:rgba(79,168,130,.15);color:var(--good);border:1px dashed rgba(79,168,130,.4);}
-.ws.future-term{background:rgba(200,151,74,.15);color:var(--warn);border:1px dashed rgba(200,151,74,.4);}
+.ws.now{background:linear-gradient(135deg,var(--rose-deep),var(--rose));color:#fff;font-weight:500;box-shadow:0 3px 10px rgba(194,80,104,.3);font-size:.42rem;width:38px;}
+.ws.future-scan{background:rgba(79,168,130,.13);color:var(--good);border:1px dashed rgba(79,168,130,.35);}
+.ws.future-term{background:rgba(200,151,74,.13);color:var(--warn);border:1px dashed rgba(200,151,74,.35);}
 
-/* ── WEEK DETAIL CARD ── */
-.week-detail{
-  background:linear-gradient(135deg,#fef8fa,#fdf3f5);
-  border:1px solid var(--border);border-left:4px solid var(--rose);
-  border-radius:14px;padding:14px;margin-bottom:10px;
-}
-.wd-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.wd-week{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--rose-deep);line-height:1;}
-.wd-size{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--muted);}
-.wd-emoji{font-size:2.2rem;line-height:1;}
+/* WEEK DETAIL */
+.week-detail{background:linear-gradient(135deg,#fef8fa,#fdf3f5);border:1px solid var(--border);border-left:4px solid var(--rose);border-radius:14px;padding:13px;margin-bottom:10px;}
+.wd-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+.wd-week{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:var(--rose-deep);line-height:1;}
+.wd-size{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--muted);}
+.wd-emoji{font-size:2rem;line-height:1;}
 .wd-facts{list-style:none;}
-.wd-facts li{font-size:.55rem;color:var(--ink2);padding:3px 0;display:flex;gap:7px;line-height:1.5;border-bottom:1px solid rgba(236,221,226,.5);}
+.wd-facts li{font-size:.53rem;color:var(--ink2);padding:3px 0;display:flex;gap:7px;line-height:1.5;border-bottom:1px solid rgba(236,221,226,.4);}
 .wd-facts li:last-child{border-bottom:none;}
 .wd-facts li::before{content:'·';color:var(--rose);flex-shrink:0;font-size:.9rem;line-height:1.3;}
 
-/* ── NURSE CARD ── */
-.nurse-card{
-  background:var(--good-pale);border:1px solid rgba(79,168,130,.28);
-  border-left:4px solid var(--good);border-radius:14px;padding:14px;margin-bottom:10px;
-}
-.nh{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
-.nico{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--good),#3d8f6b);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;flex-shrink:0;}
-.nm{font-size:.46rem;letter-spacing:.07em;color:#3a7a5a;text-transform:uppercase;}
-.nt{font-size:.4rem;color:#7ab898;margin-top:1px;}
-.nq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#2a5a3e;line-height:1.55;}
+/* WEEK CHIPS */
+.weeks-scroller{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px;}
+.weeks-scroller::-webkit-scrollbar{display:none;}
+.wk-chip{flex-shrink:0;padding:5px 9px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:.42rem;color:var(--muted);cursor:pointer;white-space:nowrap;}
+.wk-chip.active{background:var(--rose-pale);border-color:var(--rose);color:var(--rose-deep);}
+
+/* NURSE CARD */
+.nurse-card{background:var(--good-pale);border:1px solid rgba(79,168,130,.28);border-left:4px solid var(--good);border-radius:14px;padding:13px;margin-bottom:10px;}
+.nh{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.nico{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,var(--good),#3d8f6b);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;flex-shrink:0;}
+.nm{font-size:.44rem;letter-spacing:.07em;color:#3a7a5a;text-transform:uppercase;}
+.nt{font-size:.38rem;color:#7ab898;margin-top:1px;}
+.nq{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:#2a5a3e;line-height:1.55;}
 .nq strong{color:var(--good);font-style:normal;font-weight:600;}
 
-/* ── CHECKLIST ── */
+/* CHECKLIST */
 .clist{list-style:none;}
-.clist li{display:flex;gap:8px;align-items:flex-start;font-size:.53rem;color:var(--ink2);padding:5px 0;border-bottom:1px solid #faf3f5;line-height:1.5;}
+.clist li{display:flex;gap:7px;align-items:flex-start;font-size:.52rem;color:var(--ink2);padding:4px 0;border-bottom:1px solid #faf3f5;line-height:1.5;}
 .clist li:last-child{border-bottom:none;}
-.ico-ok{color:var(--good);font-size:.6rem;flex-shrink:0;margin-top:1px;}
-.ico-ar{color:var(--rose-deep);font-size:.6rem;flex-shrink:0;margin-top:1px;}
+.ico-ok{color:var(--good);font-size:.58rem;flex-shrink:0;margin-top:1px;}
+.ico-ar{color:var(--rose-deep);font-size:.58rem;flex-shrink:0;margin-top:1px;}
 
-/* ── IMPORTANT DATES ── */
-.dates-list{display:flex;flex-direction:column;gap:8px;}
-.date-item{
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
-  padding:12px 14px;display:flex;align-items:center;gap:12px;
-  box-shadow:0 1px 8px rgba(28,16,24,.04);
-}
-.date-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.date-body{flex:1;}
-.date-name{font-size:.55rem;color:var(--ink);margin-bottom:2px;}
-.date-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--rose-deep);font-weight:300;}
-.date-week{font-size:.42rem;color:var(--muted);margin-top:1px;}
-.date-days{font-size:.42rem;color:var(--muted);text-align:right;white-space:nowrap;}
+/* DATES */
+.dates-list{display:flex;flex-direction:column;gap:7px;}
+.date-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;}
+.date-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.date-body{flex:1;min-width:0;}
+.date-name{font-size:.52rem;color:var(--ink);margin-bottom:2px;}
+.date-val{font-family:'Cormorant Garamond',serif;font-size:.98rem;color:var(--rose-deep);font-weight:300;}
+.date-week{font-size:.4rem;color:var(--muted);margin-top:1px;}
+.date-days{font-size:.4rem;color:var(--muted);text-align:right;white-space:nowrap;flex-shrink:0;}
 .date-days.soon{color:var(--good);font-weight:500;}
-.date-days.past{color:#ccc;}
+.date-days.past-col{color:#ccc;}
 
-/* ── WARNING ── */
-.warn-card{background:#fffbf0;border:1px solid #e8d49a;border-left:4px solid var(--warn);border-radius:14px;padding:13px 14px;margin-bottom:10px;}
-.warn-title{font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:8px;font-weight:500;}
+/* WARNING */
+.warn-card{background:#fffbf0;border:1px solid #e8d49a;border-left:4px solid var(--warn);border-radius:14px;padding:12px 13px;margin-bottom:10px;}
+.warn-title{font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:7px;font-weight:500;}
 .warn-card ul{list-style:none;}
-.warn-card li{font-size:.53rem;color:#7a6830;padding:3px 0;display:flex;gap:7px;line-height:1.5;}
+.warn-card li{font-size:.52rem;color:#7a6830;padding:3px 0;display:flex;gap:7px;line-height:1.5;}
 .warn-card li::before{content:'—';color:var(--warn);flex-shrink:0;}
 
-/* ── STEPS ── */
-.steps{display:flex;flex-direction:column;gap:8px;}
-.step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
-.snum{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#f0e4e8;line-height:1;flex-shrink:0;width:32px;}
-.slbl{font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:3px;}
-.stxt{font-size:.54rem;color:var(--ink2);line-height:1.5;}
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:7px;}
+.step{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;}
+.snum{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:#f0e4e8;line-height:1;flex-shrink:0;width:30px;}
+.slbl{font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-deep);margin-bottom:3px;}
+.stxt{font-size:.52rem;color:var(--ink2);line-height:1.5;}
 
-/* ── RESULT BOX ── */
-.result-box{
-  background:linear-gradient(135deg,var(--rose-pale),#fff8fa);
-  border:1px solid var(--rose);border-radius:14px;padding:14px;margin-top:8px;
-  display:none;
-}
+/* RESULT BOX */
+.result-box{background:linear-gradient(135deg,var(--rose-pale),#fff8fa);border:1px solid var(--rose);border-radius:13px;padding:13px;margin-top:8px;display:none;}
 .result-box.show{display:block;}
-.rb-title{font-size:.42rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
-.rb-week{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--rose-deep);line-height:1;}
-.rb-sub{font-size:.52rem;color:var(--ink2);margin-top:4px;}
-.rb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-.rb-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;}
-.rb-lbl{font-size:.4rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.rb-val{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ink);font-weight:300;}
+.rb-title{font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;}
+.rb-week{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--rose-deep);line-height:1;}
+.rb-sub{font-size:.5rem;color:var(--ink2);margin-top:4px;}
+.rb-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px;}
+.rb-item{background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px;}
+.rb-lbl{font-size:.38rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.rb-val{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);font-weight:300;}
 
-/* ── FORMULA BOX ── */
-.formula{background:#faf3f5;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:.52rem;color:var(--rose-deep);letter-spacing:.03em;margin:7px 0;line-height:1.7;}
+/* FORMULA */
+.formula{background:#faf3f5;border:1px solid var(--border);border-radius:9px;padding:9px 11px;font-size:.5rem;color:var(--rose-deep);letter-spacing:.03em;margin:6px 0;line-height:1.75;}
 .formula span{color:var(--ink2);}
 
-/* ── FOOTER ── */
-.footer{text-align:center;font-size:.44rem;color:var(--muted);letter-spacing:.07em;line-height:1.9;padding-top:14px;border-top:1px solid var(--border);}
+/* TOGGLE */
+.toggle-row{display:flex;gap:5px;margin-bottom:9px;}
+.tog-btn{flex:1;padding:7px 5px;border:1px solid var(--border);border-radius:9px;background:var(--card);font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;}
+.tog-btn.active{background:var(--rose-pale);border-color:var(--rose);color:var(--rose-deep);}
 
-/* ── ANIMATIONS ── */
+/* FOOTER */
+.footer{text-align:center;font-size:.42rem;color:var(--muted);letter-spacing:.07em;line-height:1.9;padding-top:13px;border-top:1px solid var(--border);}
+
+/* ANIMATIONS */
 .fade{opacity:0;transform:translateY(12px);animation:up .45s forwards;}
 .d1{animation-delay:.04s}.d2{animation-delay:.1s}.d3{animation-delay:.17s}
 .d4{animation-delay:.24s}.d5{animation-delay:.31s}.d6{animation-delay:.38s}
-.d7{animation-delay:.45s}.d8{animation-delay:.52s}
 @keyframes up{to{opacity:1;transform:translateY(0);}}
-
-/* ── TOGGLE ── */
-.toggle-row{display:flex;gap:6px;margin-bottom:10px;}
-.tog-btn{flex:1;padding:8px 6px;border:1px solid var(--border);border-radius:9px;background:var(--card);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;}
-.tog-btn.active{background:var(--rose-pale);border-color:var(--rose);color:var(--rose-deep);}
-
-/* scrollable weeks row */
-.weeks-scroller{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:6px;}
-.weeks-scroller::-webkit-scrollbar{display:none;}
-.wk-chip{flex-shrink:0;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:.44rem;color:var(--muted);cursor:pointer;white-space:nowrap;}
-.wk-chip.active{background:var(--rose-pale);border-color:var(--rose);color:var(--rose-deep);}
-.wk-chip.current{font-weight:500;}
 </style>
 </head>
 <body>
@@ -304,27 +240,31 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
         <div class="hero-eye">Graviditetsjournal</div>
         <div class="hero-title">Babys<br><em>Rejse</em></div>
       </div>
-      <div class="hero-right">
-        <div class="hero-week" id="hero-week">5+4</div>
+      <div class="hero-right" onclick="toggleGAEdit()">
+        <div class="hero-week-val" id="hero-week">5+4</div>
         <div class="hero-week-lbl">Gestationsuge</div>
+        <div class="hero-week-edit">✎ tryk for at redigere</div>
       </div>
+    </div>
+    <!-- Inline GA editor -->
+    <div class="ga-edit-row" id="ga-edit-row">
+      <input class="ga-inp" type="number" id="ga-w" min="1" max="42" placeholder="5">
+      <div class="ga-sep">+</div>
+      <input class="ga-inp" type="number" id="ga-d" min="0" max="6" placeholder="4">
+      <div class="ga-sep" style="color:rgba(255,255,255,.35);font-size:.5rem;">uger+dage</div>
+      <button class="ga-btn" onclick="saveGA()">Gem</button>
+      <button class="ga-btn cancel" onclick="toggleGAEdit()">✕</button>
     </div>
     <div class="nurse-pill">
       <div class="npulse"></div>
       <div class="npill-txt"><strong>Bekræftet af sygeplejerske</strong> · 21. april, 07.44</div>
     </div>
-    <div class="hstrip">
-      <div class="hm"><div class="hm-v" id="h-v1">57</div><div class="hm-u">mIU/ml</div><div class="hm-d" id="h-d1">15/04</div></div>
-      <div class="harrow">→</div>
-      <div class="hm"><div class="hm-v" id="h-v2">130</div><div class="hm-u">mIU/ml</div><div class="hm-d" id="h-d2">20/04</div></div>
-      <div class="harrow">→</div>
-      <div class="hm proj"><div class="hm-v" id="h-proj">152</div><div class="hm-u">mIU/ml</div><div class="hm-d">Proj. i dag</div></div>
-    </div>
+    <div class="hstrip" id="hstrip"></div>
   </div>
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bnav" id="bnav">
+<nav class="bnav">
   <button class="bnav-btn active" onclick="showPanel('hcg',this)"><div class="bnav-icon">📈</div><div class="bnav-lbl">HCG</div></button>
   <button class="bnav-btn" onclick="showPanel('weeks',this)"><div class="bnav-icon">🌱</div><div class="bnav-lbl">Uge for uge</div></button>
   <button class="bnav-btn" onclick="showPanel('dates',this)"><div class="bnav-icon">📅</div><div class="bnav-lbl">Datoer</div></button>
@@ -334,63 +274,72 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
 <!-- SCROLL BODY -->
 <div class="scroll-body">
 
-  <!-- ════════════ PANEL: HCG ════════════ -->
+  <!-- ══ HCG PANEL ══ -->
   <div class="panel active" id="panel-hcg">
 
-    <!-- Nurse confirmation -->
     <div class="sec fade d2">Lægefaglig bekræftelse</div>
     <div class="nurse-card fade d2">
       <div class="nh"><div class="nico">🩺</div><div><div class="nm">Sygeplejerske · Min Læge</div><div class="nt">Afsendt 21. april, 07.44</div></div></div>
       <div class="nq">"Ja det er helt fint — det er over en fordobling, <strong>så det er som det skal være."</strong></div>
     </div>
 
-    <!-- Stats -->
     <div class="sec fade d2">Nøgletal</div>
     <div class="srow fade d2">
-      <div class="stat"><div class="stag tok">Normal</div><div class="sv" id="st-doubling">101</div><div class="su">timer</div><div class="sl">Fordobling</div></div>
+      <div class="stat"><div class="stag" id="tag-doubling">Normal</div><div class="sv" id="st-doubling">101</div><div class="su">timer</div><div class="sl">Fordobling</div></div>
       <div class="stat"><div class="stag tok">God</div><div class="sv" id="st-rise">128</div><div class="su">%</div><div class="sl">Stigning</div></div>
       <div class="stat"><div class="stag tlo">Lav-norm.</div><div class="sv" id="st-last">130</div><div class="su">mIU/ml</div><div class="sl">Seneste</div></div>
     </div>
 
-    <!-- Beregningsmetode -->
-    <div class="sec fade d3">Beregningsmetode (Barnhart et al. / ACOG)</div>
-    <div class="card cp fade d3">
-      <div class="ct">Fordoblingshastighed T½</div>
-      <div class="formula">T½ = t × ln(2) / ln(HCG₂/HCG₁)<br><span>T½ = 120 × 0.6931 / ln(130/57)</span><br><span>T½ = 83.17 / 0.8242 = <strong>~101 timer</strong></span></div>
-      <div class="formula" style="margin-top:0;">Projektion: <span>HCG(t) = 130 × 2^(Δt / 101)</span></div>
-      <div style="font-size:.4rem;color:var(--muted);margin-top:6px;line-height:1.7;">Ref: Barnhart KT et al., NEJM 2009 · ACOG Practice Bulletin · Anerkendt af danske læger og jordemødre</div>
-    </div>
-
-    <!-- Add measurements -->
-    <div class="sec fade d3">Tilføj HCG-målinger</div>
-    <div class="card cp fade d3">
-      <div class="ct">Dine målinger</div>
-      <div class="mlist" id="meas-list"></div>
-      <button class="btn-s" onclick="addMeasRow()">+ Tilføj måling</button>
-      <button class="btn-p" onclick="recalc()" style="margin-top:8px;">Beregn &amp; opdater graf</button>
-    </div>
-
-    <!-- Chart -->
-    <div class="card fade d4">
-      <div class="chart-wrap">
-        <div class="ct">HCG kurve — målte + projekterede værdier (til uge 42)</div>
-        <svg class="chart" id="hcg-svg" viewBox="0 0 340 160"></svg>
-        <div class="legend">
-          <div class="leg-item"><div class="leg-line" style="background:var(--rose-deep);"></div>Målt</div>
-          <div class="leg-item"><div class="leg-dash"></div>Projekteret</div>
-          <div class="leg-item"><div style="width:8px;height:8px;border-radius:50%;background:var(--good);"></div>I dag</div>
+    <!-- Collapsible: Beregningsmetode -->
+    <div class="card fade d3" style="margin-bottom:10px;">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span class="coll-title">Beregningsmetode (Barnhart / ACOG)</span>
+        <span class="coll-chevron">▾</span>
+      </div>
+      <div class="coll-body">
+        <div class="coll-inner">
+          <div class="formula">T½ = t × ln(2) / ln(HCG₂/HCG₁)<br><span id="formula-detail">T½ = 120 × 0.6931 / ln(130/57) = ~101 timer</span></div>
+          <div class="formula" style="margin-top:0;">Projektion: <span>HCG(t) = HCG_sidst × 2^(Δtimer / T½)</span></div>
+          <div style="font-size:.38rem;color:var(--muted);margin-top:5px;line-height:1.7;">Ref: Barnhart KT et al., NEJM 2009 · ACOG Practice Bulletin · Anerkendt af danske læger</div>
         </div>
       </div>
     </div>
 
-    <!-- Projection table -->
-    <div class="card cp fade d4">
-      <div class="ct">Projekterede HCG-værdier frem til uge 12</div>
-      <table class="ptable" id="proj-table"></table>
-      <div style="font-size:.38rem;color:var(--muted);margin-top:8px;line-height:1.7;">* Projekteret · Normal uge 5: 200–7.000 mIU/ml · Ref: Barnhart KT et al., NEJM 2009</div>
+    <!-- Measurements input -->
+    <div class="sec fade d3">Dine HCG-målinger</div>
+    <div class="card cp fade d3">
+      <div class="mlist" id="meas-list"></div>
+      <button class="btn-s" onclick="addMeasRow()">+ Tilføj måling</button>
+      <button class="btn-p" onclick="recalc()">Beregn &amp; opdater</button>
     </div>
 
-    <!-- Warning -->
+    <!-- Chart -->
+    <div class="card fade d3">
+      <div class="chart-wrap">
+        <div class="ct">HCG kurve — målte &amp; projekterede værdier</div>
+        <svg class="chart" id="hcg-svg" viewBox="0 0 340 165"></svg>
+        <div class="legend">
+          <div class="leg-item"><div class="leg-line" style="background:var(--rose-deep);height:2.5px;"></div>Dine målinger</div>
+          <div class="leg-item"><div style="width:14px;height:0;border-top:2px dashed #4fa882;"></div>Projektion</div>
+          <div class="leg-item"><div style="width:8px;height:8px;border-radius:50%;background:var(--good);"></div>I dag (proj.)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projection table collapsible -->
+    <div class="card fade d4" style="margin-bottom:10px;">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span class="coll-title">Projekterede HCG-værdier</span>
+        <span class="coll-chevron open">▾</span>
+      </div>
+      <div class="coll-body open">
+        <div class="coll-inner" style="padding-top:0;">
+          <table class="ptable" id="proj-table"></table>
+          <div style="font-size:.36rem;color:var(--muted);margin-top:7px;line-height:1.7;">● Målt &nbsp; ◉ I dag (projekteret) &nbsp; * Projekteret · Ref: Barnhart KT et al., NEJM 2009</div>
+        </div>
+      </div>
+    </div>
+
     <div class="warn-card fade d5">
       <div class="warn-title">⚠ Søg akut læge ved</div>
       <ul>
@@ -401,20 +350,18 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
       </ul>
     </div>
 
-    <!-- Next steps -->
     <div class="sec fade d5">Næste skridt</div>
     <div class="steps fade d5">
-      <div class="step"><div class="snum">1</div><div><div class="slbl">Inden for 48–72 timer</div><div class="stxt">Ny HCG-måling — forventet ~208 mIU/ml ved normal stigning</div></div></div>
-      <div class="step"><div class="snum">2</div><div><div class="slbl">Uge 6–7 · om ~10 dage</div><div class="stxt">Første ultralyd — bekræfter lokalisering og hjerteaktivitet</div></div></div>
+      <div class="step"><div class="snum">1</div><div><div class="slbl">Inden for 48–72 timer</div><div class="stxt" id="step1-txt">Ny HCG-måling — forventet ~208 mIU/ml ved normal stigning</div></div></div>
+      <div class="step"><div class="snum">2</div><div><div class="slbl">Uge 6–7</div><div class="stxt">Første ultralyd — bekræfter lokalisering og hjerteaktivitet</div></div></div>
       <div class="step"><div class="snum">3</div><div><div class="slbl">Nu</div><div class="stxt">Kontakt jordemoder for oprettelse af graviditetsomsorg</div></div></div>
     </div>
   </div>
 
-  <!-- ════════════ PANEL: UGE FOR UGE ════════════ -->
+  <!-- ══ WEEKS PANEL ══ -->
   <div class="panel" id="panel-weeks">
     <div class="sec">Vælg uge</div>
     <div class="weeks-scroller" id="weeks-scroller"></div>
-
     <div class="week-detail" id="week-detail-card">
       <div class="wd-header">
         <div><div class="wd-week" id="wd-week-num">Uge 5</div><div class="wd-size" id="wd-size">Sesamfrø · ~2 mm</div></div>
@@ -422,43 +369,26 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
       </div>
       <ul class="wd-facts" id="wd-facts"></ul>
     </div>
-
-    <!-- Week progress bar -->
     <div class="card cp">
       <div class="ct">Trimester-oversigt</div>
       <div class="wtrack" id="wtrack-full"></div>
-      <div style="display:flex;justify-content:space-between;font-size:.38rem;color:var(--muted);margin-top:4px;">
-        <span>1. trimester (U1–12)</span>
-        <span>2. trimester (U13–26)</span>
-        <span>3. trimester (U27–42)</span>
+      <div style="display:flex;justify-content:space-between;font-size:.36rem;color:var(--muted);margin-top:4px;">
+        <span>1. trim. U1–12</span><span>2. trim. U13–26</span><span>3. trim. U27–42</span>
       </div>
     </div>
   </div>
 
-  <!-- ════════════ PANEL: DATOER ════════════ -->
+  <!-- ══ DATES PANEL ══ -->
   <div class="panel" id="panel-dates">
-    <div class="sec">Vigtige graviditetsdatoer</div>
-
-    <!-- Input termin -->
+    <div class="sec">Termin &amp; startdato</div>
     <div class="card cp">
-      <div class="ct">Din termin &amp; startdato</div>
-      <div class="igrp">
-        <label class="ilbl">Første dag i sidste menstruation (LMP)</label>
-        <input class="inp" type="date" id="lmp-date" value="2025-12-16">
-      </div>
-      <div class="igrp">
-        <label class="ilbl">Terminsdato (fra scanning)</label>
-        <input class="inp" type="date" id="term-date" value="2026-09-22">
-      </div>
+      <div class="igrp"><label class="ilbl">Første dag i sidste menstruation (LMP)</label><input class="inp" type="date" id="lmp-date"></div>
+      <div class="igrp"><label class="ilbl">Terminsdato (fra scanning)</label><input class="inp" type="date" id="term-date"></div>
       <button class="btn-p" onclick="calcDates()">Beregn alle datoer</button>
     </div>
-
-    <!-- Dates list -->
     <div class="sec">Beregnet graviditetsplan</div>
     <div class="dates-list" id="dates-list"></div>
-
-    <!-- Custom event -->
-    <div class="sec">Tilføj egen aftale / dato</div>
+    <div class="sec" style="margin-top:18px;">Tilføj egen aftale</div>
     <div class="card cp">
       <div class="inp-row">
         <div class="igrp"><label class="ilbl">Dato</label><input class="inp" type="date" id="cust-date"></div>
@@ -466,32 +396,31 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
       </div>
       <button class="btn-p" onclick="addCustomDate()">Tilføj dato</button>
     </div>
-    <div id="custom-dates-list" style="margin-top:6px;"></div>
+    <div id="custom-dates-list" style="margin-top:6px;display:flex;flex-direction:column;gap:7px;"></div>
   </div>
 
-  <!-- ════════════ PANEL: BEREGNER ════════════ -->
+  <!-- ══ CALC PANEL ══ -->
   <div class="panel" id="panel-calc">
 
+    <!-- Gestationsuge -->
     <div class="sec">Termins- &amp; ugeberegner</div>
     <div class="toggle-row">
-      <button class="tog-btn active" id="tog-term" onclick="toggleCalc('term')">Jeg kender min termin</button>
-      <button class="tog-btn" id="tog-lmp" onclick="toggleCalc('lmp')">Jeg kender LMP</button>
+      <button class="tog-btn active" id="tog-term" onclick="toggleCalc('term')">Fra terminsdato</button>
+      <button class="tog-btn" id="tog-lmp" onclick="toggleCalc('lmp')">Fra LMP</button>
     </div>
 
-    <!-- By term -->
     <div class="card cp" id="calc-term-panel">
-      <div class="ct">Beregn uge ud fra terminsdato</div>
-      <div class="igrp"><label class="ilbl">Din terminsdato</label><input class="inp" type="date" id="calc-term-inp" value="2026-09-22"></div>
-      <div class="igrp"><label class="ilbl">Hvilken dato vil du beregne for?</label><input class="inp" type="date" id="calc-term-for" value="2026-04-21"></div>
+      <div class="ct">Beregn gestationsuge fra terminsdato</div>
+      <div class="igrp"><label class="ilbl">Din terminsdato</label><input class="inp" type="date" id="calc-term-inp"></div>
+      <div class="igrp"><label class="ilbl">Beregn for hvilken dato?</label><input class="inp" type="date" id="calc-term-for"></div>
       <button class="btn-p" onclick="calcByTerm()">Beregn uge</button>
       <div class="result-box" id="res-term"></div>
     </div>
 
-    <!-- By LMP -->
     <div class="card cp" id="calc-lmp-panel" style="display:none;">
-      <div class="ct">Beregn uge ud fra sidste menstruation (Naegeles regel)</div>
-      <div class="igrp"><label class="ilbl">Første dag i sidste menstruation</label><input class="inp" type="date" id="calc-lmp-inp" value="2025-12-16"></div>
-      <div class="igrp"><label class="ilbl">Hvilken dato vil du beregne for?</label><input class="inp" type="date" id="calc-lmp-for" value="2026-04-21"></div>
+      <div class="ct">Beregn gestationsuge fra LMP (Naegeles regel)</div>
+      <div class="igrp"><label class="ilbl">Første dag i sidste menstruation</label><input class="inp" type="date" id="calc-lmp-inp"></div>
+      <div class="igrp"><label class="ilbl">Beregn for hvilken dato?</label><input class="inp" type="date" id="calc-lmp-for"></div>
       <button class="btn-p" onclick="calcByLMP()">Beregn uge</button>
       <div class="result-box" id="res-lmp"></div>
     </div>
@@ -501,9 +430,9 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
     <div class="card cp">
       <div class="ct">Barnhart et al. / ACOG metode</div>
       <div class="inp-3">
-        <div class="igrp"><label class="ilbl">HCG 1</label><input class="inp" type="number" id="hcg-a" placeholder="57"></div>
-        <div class="igrp"><label class="ilbl">HCG 2</label><input class="inp" type="number" id="hcg-b" placeholder="130"></div>
-        <div class="igrp"><label class="ilbl">Timer imellem</label><input class="inp" type="number" id="hcg-t" placeholder="120"></div>
+        <div class="igrp"><label class="ilbl">HCG 1 (tidligst)</label><input class="inp" type="number" id="hcg-a" placeholder="57" min="1"></div>
+        <div class="igrp"><label class="ilbl">HCG 2 (senest)</label><input class="inp" type="number" id="hcg-b" placeholder="130" min="1"></div>
+        <div class="igrp"><label class="ilbl">Timer imellem</label><input class="inp" type="number" id="hcg-t" placeholder="120" min="1"></div>
       </div>
       <button class="btn-p" onclick="calcHCG()">Beregn fordobling</button>
       <div class="result-box" id="res-hcg"></div>
@@ -520,42 +449,483 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible;}
 </div><!-- /scroll-body -->
 
 <script>
-// ══════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════
+// ════════════════════════════════════
+// CONSTANTS & STATE
+// ════════════════════════════════════
+const TODAY_STR = '2026-04-21';
+const TODAY = new Date(TODAY_STR + 'T12:00:00');
 
-// Default measurements (pre-loaded)
-let measurements = [
-  { date: '2026-04-15', hcg: 57 },
-  { date: '2026-04-20', hcg: 130 }
-];
+// Load from localStorage or use defaults
+function loadState() {
+  try {
+    const s = localStorage.getItem('gravjournal_v2');
+    if (s) return JSON.parse(s);
+  } catch(e) {}
+  return {
+    measurements: [
+      { date: '2026-04-15', hcg: 57 },
+      { date: '2026-04-20', hcg: 130 }
+    ],
+    gaWeeks: 5,
+    gaDays: 4,
+    lmp: '2025-12-16',
+    term: '2026-09-22',
+    customDates: []
+  };
+}
 
-// Current gestational info
-const LMP = new Date('2025-12-16');
-const TERM = new Date('2026-09-22');
-const TODAY = new Date('2026-04-21');
+function saveState() {
+  try { localStorage.setItem('gravjournal_v2', JSON.stringify(STATE)); } catch(e) {}
+}
 
-// ── Week-by-week data ──
+let STATE = loadState();
+
+// Derive LMP from GA on TODAY
+function lmpFromGA(weeks, days) {
+  const totalDays = weeks * 7 + days;
+  const lmp = new Date(TODAY);
+  lmp.setDate(lmp.getDate() - totalDays);
+  return lmp;
+}
+
+function getLMP() {
+  return lmpFromGA(STATE.gaWeeks, STATE.gaDays);
+}
+
+function getTERM() {
+  const lmp = getLMP();
+  const term = new Date(lmp);
+  term.setDate(term.getDate() + 280);
+  return term;
+}
+
+// ════════════════════════════════════
+// DATE HELPERS
+// ════════════════════════════════════
+function parseDate(str) {
+  // Parse YYYY-MM-DD as local date (avoid UTC offset issues)
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y, m-1, d, 12, 0, 0);
+}
+
+function toDateStr(d) {
+  return d.toISOString().split('T')[0];
+}
+
+function diffDays(a, b) {
+  // a and b are Date objects, returns b - a in whole days
+  return Math.round((b - a) / 86400000);
+}
+
+function gaFromLMP(lmpDate, targetDate) {
+  const days = diffDays(lmpDate, targetDate);
+  return { weeks: Math.floor(days / 7), days: days % 7, total: days };
+}
+
+function fmtGA(ga) { return `${ga.weeks}+${ga.days}`; }
+
+function fmtDateDA(d) {
+  return d.toLocaleDateString('da-DK', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function fmtDateShortDA(d) {
+  return d.toLocaleDateString('da-DK', { day: 'numeric', month: 'short' });
+}
+
+function daysUntil(d) {
+  return diffDays(TODAY, d);
+}
+
+// ════════════════════════════════════
+// HCG MATH (Barnhart et al.)
+// ════════════════════════════════════
+function calcT(hcg1, hcg2, hoursApart) {
+  if (hcg2 <= 0 || hcg1 <= 0 || hcg2 === hcg1) return 101;
+  return hoursApart * Math.LN2 / Math.log(hcg2 / hcg1);
+}
+
+function projectHCG(baseHcg, baseDateStr, targetDate, T) {
+  const base = parseDate(baseDateStr);
+  const hrs = diffDays(base, targetDate) * 24;
+  return baseHcg * Math.pow(2, hrs / T);
+}
+
+function getDoublingTime() {
+  const sorted = getSortedMeasurements();
+  if (sorted.length < 2) return 101;
+  const a = sorted[sorted.length - 2];
+  const b = sorted[sorted.length - 1];
+  const hrs = diffDays(parseDate(a.date), parseDate(b.date)) * 24;
+  if (hrs <= 0) return 101;
+  return calcT(a.hcg, b.hcg, hrs);
+}
+
+function getSortedMeasurements() {
+  return [...STATE.measurements]
+    .filter(m => m.date && m.hcg > 0)
+    .sort((a, b) => parseDate(a.date) - parseDate(b.date));
+}
+
+// ════════════════════════════════════
+// GESTATIONAL AGE HERO
+// ════════════════════════════════════
+function updateHeroGA() {
+  document.getElementById('hero-week').textContent = `${STATE.gaWeeks}+${STATE.gaDays}`;
+}
+
+function toggleGAEdit() {
+  const row = document.getElementById('ga-edit-row');
+  const isOpen = row.classList.contains('show');
+  if (!isOpen) {
+    document.getElementById('ga-w').value = STATE.gaWeeks;
+    document.getElementById('ga-d').value = STATE.gaDays;
+  }
+  row.classList.toggle('show', !isOpen);
+}
+
+function saveGA() {
+  const w = parseInt(document.getElementById('ga-w').value);
+  const d = parseInt(document.getElementById('ga-d').value);
+  if (isNaN(w) || isNaN(d) || w < 1 || w > 42 || d < 0 || d > 6) {
+    alert('Ugyldig gestationsalder — uger 1-42, dage 0-6');
+    return;
+  }
+  STATE.gaWeeks = w;
+  STATE.gaDays = d;
+  saveState();
+  updateHeroGA();
+  renderAll();
+  document.getElementById('ga-edit-row').classList.remove('show');
+}
+
+// ════════════════════════════════════
+// HERO HCG STRIP
+// ════════════════════════════════════
+function renderHeroStrip() {
+  const sorted = getSortedMeasurements();
+  const strip = document.getElementById('hstrip');
+
+  if (sorted.length === 0) {
+    strip.innerHTML = '<div style="font-size:.48rem;color:rgba(255,255,255,.4);padding:8px 0;">Tilføj målinger i HCG-fanen</div>';
+    return;
+  }
+
+  const T = getDoublingTime();
+  const last = sorted[sorted.length - 1];
+  const todayProj = Math.round(projectHCG(last.hcg, last.date, TODAY, T));
+
+  // Show first, last, and today projected (max 3)
+  const items = [];
+  if (sorted.length >= 2) {
+    items.push({ v: sorted[0].hcg, d: fmtDateShortDA(parseDate(sorted[0].date)), proj: false });
+    if (sorted.length > 2) {
+      // show middle point if >2
+    }
+    items.push({ v: last.hcg, d: fmtDateShortDA(parseDate(last.date)), proj: false });
+  } else {
+    items.push({ v: last.hcg, d: fmtDateShortDA(parseDate(last.date)), proj: false });
+  }
+  items.push({ v: todayProj, d: 'Proj. i dag', proj: true });
+
+  strip.innerHTML = items.map((item, i) =>
+    `${i > 0 ? '<div class="harrow">→</div>' : ''}
+     <div class="hm${item.proj ? ' proj' : ''}">
+       <div class="hm-v">${item.v}</div>
+       <div class="hm-u">mIU/ml</div>
+       <div class="hm-d">${item.d}</div>
+     </div>`
+  ).join('');
+}
+
+// ════════════════════════════════════
+// STATS
+// ════════════════════════════════════
+function renderStats() {
+  const sorted = getSortedMeasurements();
+  if (sorted.length < 2) return;
+
+  const T = getDoublingTime();
+  const first = sorted[0];
+  const last = sorted[sorted.length - 1];
+  const rise = Math.round((last.hcg / first.hcg - 1) * 100);
+
+  document.getElementById('st-doubling').textContent = Math.round(T);
+  document.getElementById('st-rise').textContent = rise;
+  document.getElementById('st-last').textContent = last.hcg;
+
+  // Tag colour
+  const tagEl = document.getElementById('tag-doubling');
+  if (T < 48) { tagEl.className = 'stag tok'; tagEl.textContent = 'Fremragende'; }
+  else if (T < 72) { tagEl.className = 'stag tok'; tagEl.textContent = 'Normal'; }
+  else if (T < 96) { tagEl.className = 'stag twarn'; tagEl.textContent = 'Acceptabel'; }
+  else { tagEl.className = 'stag tlo'; tagEl.textContent = 'Langsom'; }
+
+  // Update formula detail
+  if (sorted.length >= 2) {
+    const hrs = diffDays(parseDate(sorted[sorted.length-2].date), parseDate(last.date)) * 24;
+    document.getElementById('formula-detail').textContent =
+      `T½ = ${hrs} × 0.6931 / ln(${last.hcg}/${sorted[sorted.length-2].hcg}) = ~${Math.round(T)} timer`;
+  }
+
+  // Update step 1 projection
+  const proj72 = Math.round(projectHCG(last.hcg, last.date, new Date(parseDate(last.date).getTime() + 72*3600000), T));
+  document.getElementById('step1-txt').textContent = `Ny HCG-måling — forventet ~${proj72} mIU/ml ved 72 timer`;
+}
+
+// ════════════════════════════════════
+// CHART
+// ════════════════════════════════════
+function renderChart() {
+  const svg = document.getElementById('hcg-svg');
+  const sorted = getSortedMeasurements();
+  if (sorted.length === 0) { svg.innerHTML = ''; return; }
+
+  const T = getDoublingTime();
+  const lmp = getLMP();
+  const last = sorted[sorted.length - 1];
+
+  // Build projection points: from last measurement to week 12
+  const projEnd = new Date(lmp);
+  projEnd.setDate(projEnd.getDate() + 12 * 7);
+  const projPoints = [];
+  let cur = parseDate(last.date);
+  while (cur <= projEnd) {
+    projPoints.push({ date: new Date(cur), hcg: projectHCG(last.hcg, last.date, cur, T) });
+    cur = new Date(cur.getTime() + 86400000);
+  }
+
+  // All values for scale
+  const allHcg = [...sorted.map(m => m.hcg), ...projPoints.map(p => p.hcg)];
+  const maxHcg = Math.max(...allHcg, 500);
+  const firstDate = parseDate(sorted[0].date);
+  const lastDate = projEnd;
+  const totalDays = diffDays(firstDate, lastDate);
+
+  const PAD = { l: 36, r: 10, t: 14, b: 24 };
+  const W = 340, H = 165;
+  const cw = W - PAD.l - PAD.r;
+  const ch = H - PAD.t - PAD.b;
+
+  const xP = (date) => PAD.l + diffDays(firstDate, date) / totalDays * cw;
+
+  // Log scale for y axis
+  const logMin = Math.log(Math.max(1, sorted[0].hcg * 0.5));
+  const logMax = Math.log(Math.max(maxHcg, sorted[0].hcg * 2));
+  const yP = (hcg) => {
+    const lv = Math.log(Math.max(1, hcg));
+    const ratio = (lv - logMin) / (logMax - logMin);
+    return PAD.t + ch - ratio * ch;
+  };
+
+  let out = `<defs>
+    <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c25068" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#c25068" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4fa882" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#4fa882" stop-opacity="0"/>
+    </linearGradient>
+  </defs>`;
+
+  // Grid + y labels
+  const gridVals = [50, 100, 500, 1000, 5000, 10000, 50000, 100000, 200000];
+  for (const gv of gridVals) {
+    if (gv > maxHcg * 1.2 || gv < maxHcg * 0.01) continue;
+    const y = yP(gv);
+    if (y < PAD.t - 4 || y > H - PAD.b + 4) continue;
+    const lbl = gv >= 1000 ? (gv / 1000) + 'k' : gv;
+    out += `<line x1="${PAD.l}" y1="${y.toFixed(1)}" x2="${W-PAD.r}" y2="${y.toFixed(1)}" stroke="#f0e8ec" stroke-width="1"/>`;
+    out += `<text x="${PAD.l-3}" y="${(y+3).toFixed(1)}" text-anchor="end" fill="#c8a0b0" font-size="6" font-family="monospace">${lbl}</text>`;
+  }
+
+  // Measured area fill
+  const measStr = sorted.map(m => `${xP(parseDate(m.date)).toFixed(1)},${yP(m.hcg).toFixed(1)}`).join(' ');
+  const mFirst = sorted[0], mLast = sorted[sorted.length - 1];
+  out += `<polygon points="${measStr} ${xP(parseDate(mLast.date)).toFixed(1)},${H-PAD.b} ${xP(parseDate(mFirst.date)).toFixed(1)},${H-PAD.b}" fill="url(#ag)"/>`;
+
+  // Proj area fill
+  if (projPoints.length > 1) {
+    const ppStr = projPoints.map(p => `${xP(p.date).toFixed(1)},${yP(p.hcg).toFixed(1)}`).join(' ');
+    out += `<polygon points="${ppStr} ${xP(projEnd).toFixed(1)},${H-PAD.b} ${xP(parseDate(last.date)).toFixed(1)},${H-PAD.b}" fill="url(#pg)"/>`;
+    out += `<polyline points="${ppStr}" fill="none" stroke="#4fa882" stroke-width="1.8" stroke-dasharray="4,3" stroke-linecap="round"/>`;
+  }
+
+  // Measured line
+  out += `<polyline points="${measStr}" fill="none" stroke="#c25068" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+  // Today vertical marker
+  const todayX = xP(TODAY);
+  if (todayX >= PAD.l && todayX <= W - PAD.r) {
+    out += `<line x1="${todayX.toFixed(1)}" y1="${PAD.t}" x2="${todayX.toFixed(1)}" y2="${H-PAD.b}" stroke="#4fa882" stroke-width="1" stroke-dasharray="3,3" opacity="0.65"/>`;
+    out += `<text x="${(todayX+2).toFixed(1)}" y="${PAD.t+9}" fill="#4fa882" font-size="6.5" font-family="monospace">i dag</text>`;
+  }
+
+  // Week markers on x axis
+  for (const wk of [5, 6, 7, 8, 9, 10, 11, 12]) {
+    const wkDate = new Date(lmp);
+    wkDate.setDate(wkDate.getDate() + wk * 7);
+    if (wkDate < firstDate || wkDate > lastDate) continue;
+    const wx = xP(wkDate);
+    out += `<text x="${wx.toFixed(1)}" y="${H-7}" text-anchor="middle" fill="#9a8490" font-size="6" font-family="monospace">U${wk}</text>`;
+    out += `<line x1="${wx.toFixed(1)}" y1="${H-PAD.b}" x2="${wx.toFixed(1)}" y2="${H-PAD.b+3}" stroke="#c8a0b0" stroke-width="1"/>`;
+  }
+
+  // MEASURED data points (dots + labels)
+  for (const m of sorted) {
+    const cx = xP(parseDate(m.date));
+    const cy = yP(m.hcg);
+    // Outer glow
+    out += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="9" fill="rgba(194,80,104,0.08)"/>`;
+    // White fill circle
+    out += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="5" fill="#fff" stroke="#c25068" stroke-width="2.5"/>`;
+    // Label above point
+    out += `<text x="${cx.toFixed(1)}" y="${(cy-8).toFixed(1)}" text-anchor="middle" fill="#1e1018" font-size="8" font-family="monospace" font-weight="500">${m.hcg}</text>`;
+    // Date below axis line (only for first and last to avoid clutter)
+    if (m === mFirst || m === mLast) {
+      const dateStr = parseDate(m.date).toLocaleDateString('da-DK', { day: 'numeric', month: 'short' });
+      out += `<text x="${cx.toFixed(1)}" y="${H-3}" text-anchor="middle" fill="${m===mLast?'#c25068':'#9a8490'}" font-size="6" font-family="monospace">${dateStr}</text>`;
+    }
+  }
+
+  // TODAY projected point
+  const todayHcg = projectHCG(last.hcg, last.date, TODAY, T);
+  const ty = yP(todayHcg);
+  if (todayX >= PAD.l && todayX <= W - PAD.r) {
+    out += `<circle cx="${todayX.toFixed(1)}" cy="${ty.toFixed(1)}" r="8" fill="rgba(79,168,130,0.12)"/>`;
+    out += `<circle cx="${todayX.toFixed(1)}" cy="${ty.toFixed(1)}" r="4.5" fill="#fff" stroke="#4fa882" stroke-width="2.2"/>`;
+    out += `<text x="${todayX.toFixed(1)}" y="${(ty-8).toFixed(1)}" text-anchor="middle" fill="#4fa882" font-size="7.5" font-family="monospace">~${Math.round(todayHcg)}</text>`;
+  }
+
+  svg.innerHTML = out;
+}
+
+// ════════════════════════════════════
+// PROJECTION TABLE
+// ════════════════════════════════════
+function renderTable() {
+  const sorted = getSortedMeasurements();
+  if (sorted.length === 0) { document.getElementById('proj-table').innerHTML = ''; return; }
+
+  const T = getDoublingTime();
+  const lmp = getLMP();
+  const last = sorted[sorted.length - 1];
+  const lastDate = parseDate(last.date);
+
+  // Build rows: all measured dates + projections at key intervals from last measurement
+  const projOffsets = [0, 1, 2, 3, 5, 7, 10, 14, 21, 28, 42, 56]; // days from last measurement
+  const rows = [];
+
+  // First include all actual measurements (not from last)
+  for (const m of sorted.slice(0, -1)) {
+    const d = parseDate(m.date);
+    const ga = gaFromLMP(lmp, d);
+    const isToday = d.toDateString() === TODAY.toDateString();
+    rows.push({ date: d, hcg: m.hcg, ga, isToday, isMeasured: true, isProj: false });
+  }
+
+  // Then projections from last measurement
+  for (const offset of projOffsets) {
+    const d = new Date(lastDate.getTime() + offset * 86400000);
+    const hcg = offset === 0 ? last.hcg : Math.round(projectHCG(last.hcg, last.date, d, T));
+    const ga = gaFromLMP(lmp, d);
+    const isToday = d.toDateString() === TODAY.toDateString();
+    rows.push({ date: d, hcg, ga, isToday, isMeasured: offset === 0, isProj: offset > 0 });
+  }
+
+  // Sort by date, deduplicate by date string
+  rows.sort((a, b) => a.date - b.date);
+  const seen = new Set();
+  const deduped = rows.filter(r => {
+    const k = r.date.toDateString();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+
+  let html = `<thead><tr><th>Dato</th><th>HCG</th><th>Uge</th><th>Status</th></tr></thead><tbody>`;
+  for (const r of deduped) {
+    let rowCls = '';
+    if (r.isToday) rowCls = 't-today';
+    else if (r.isMeasured) rowCls = 't-measured';
+
+    const marker = r.isToday ? '<span class="tdot"></span>' : r.isMeasured ? '<span class="mmark"></span>' : '';
+    const statusTxt = r.isToday ? '← i dag' : r.isMeasured ? 'Målt' : '';
+    const hcgSuffix = r.isProj ? '*' : '';
+
+    html += `<tr class="${rowCls}">
+      <td>${marker}${fmtDateShortDA(r.date)}</td>
+      <td class="hv">${r.hcg.toLocaleString('da-DK')}${hcgSuffix}</td>
+      <td class="wl">${fmtGA(r.ga)}</td>
+      <td class="status">${statusTxt}</td>
+    </tr>`;
+  }
+  html += '</tbody>';
+  document.getElementById('proj-table').innerHTML = html;
+}
+
+// ════════════════════════════════════
+// MEASUREMENT INPUT ROWS
+// ════════════════════════════════════
+function renderMeasRows() {
+  const list = document.getElementById('meas-list');
+  list.innerHTML = '';
+  STATE.measurements.forEach((m, i) => {
+    const row = document.createElement('div');
+    row.className = 'mrow';
+    row.innerHTML = `
+      <input class="inp" type="date" value="${m.date}" onchange="STATE.measurements[${i}].date=this.value">
+      <input class="inp" type="number" value="${m.hcg || ''}" placeholder="HCG mIU/ml" min="1"
+             onchange="STATE.measurements[${i}].hcg=parseFloat(this.value)||0">
+      <button class="mdel" onclick="delMeas(${i})">✕</button>`;
+    list.appendChild(row);
+  });
+}
+
+function addMeasRow() {
+  STATE.measurements.push({ date: TODAY_STR, hcg: 0 });
+  saveState();
+  renderMeasRows();
+}
+
+function delMeas(i) {
+  if (STATE.measurements.length <= 1) return;
+  STATE.measurements.splice(i, 1);
+  saveState();
+  renderMeasRows();
+}
+
+function recalc() {
+  STATE.measurements = STATE.measurements.filter(m => m.date && m.hcg > 0);
+  STATE.measurements.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+  saveState();
+  renderMeasRows();
+  renderAll();
+}
+
+// ════════════════════════════════════
+// WEEK FOR WEEK
+// ════════════════════════════════════
 const weekData = {
-  4:  { emoji:'🌸', size:'Valmuefrø · ~1 mm',   facts:['Implantation fuldføres i livmoderen','HCG begynder at stige og kan nu detekteres','Moderkagen begynder at dannes','Fostervæsken opbygges'] },
-  5:  { emoji:'🌱', size:'Sesamfrø · ~2 mm',     facts:['Hjertet begynder at slå (~80–85 slag/min)','Neural tube (rygrad og hjerne) anlægges','Øje- og øreanlæg dannes','HCG stiger hurtigt — kvalme kan starte','Foster kan ses på tidlig ultralyd fra 5+0'] },
-  6:  { emoji:'🫘', size:'Linse · ~4 mm',        facts:['Hjerteslag kan ses på ultralyd','Hjernen deler sig i tre dele','Arm- og benknopper vokser frem','Ansigtsanlæg synlige','HCG topper typisk i uge 8–10'] },
-  7:  { emoji:'🫐', size:'Blåbær · ~10 mm',      facts:['Alle vitale organer anlægges','Håndfolderne er synlige','Tarmsystemet begynder at dannes','Hjertet har fire kamre','Foster bevæger sig — kan ikke mærkes endnu'] },
-  8:  { emoji:'🫒', size:'Olive · ~16 mm',       facts:['Embryofasen slutter — nu kaldet foster','Alle organer er til stede','Tænder og tungeanlæg dannes','Øjenlåg dækker øjnene','Hjerteslag ~150–170 slag/min'] },
-  9:  { emoji:'🍇', size:'Vindrue · ~23 mm',     facts:['Fingre og tæer er adskilte','Knogler begynder at hærde','Fosteret kan svaje og strække sig','Ydre kønsorganer dannes (endnu ikke synlige)','Bevægelse kan ses på scanning'] },
-  10: { emoji:'🍓', size:'Jordbær · ~31 mm',     facts:['Nakkefoldscanning tilbydes uge 11–13+6','Trisomi-screening kan foretages','Alle vitale systemer funktionsdygtige','Fosteret kan sparke og stille sig','Knoglerne kan ses på scanning'] },
-  11: { emoji:'🍋', size:'Lime · ~41 mm',        facts:['Nakkefoldscanning anbefales nu (uge 11–13+6)','CRL bruges til præcis terminsfastsættelse','Fingernegle begynder at vokse','Nyrer producerer urin','Leveren producerer blodceller'] },
-  12: { emoji:'🍈', size:'Blomme · ~53 mm',      facts:['1. trimester afsluttes','Risiko for abort falder markant','Fosteret kan åbne og lukke hænderne','Reflekser er til stede','Scanning kan afsløre tvillinger'] },
-  13: { emoji:'🍑', size:'Fersken · ~74 mm',     facts:['2. trimester starter','Morkagen overtager hormonproduktionen (HCG falder)','Udtalt vækstspurt','Fingeraftryk dannes','Fosteret kan sutte på tommelfingeren'] },
-  14: { emoji:'🍊', size:'Appelsin · ~85 mm',    facts:['Køn kan evt. ses på scanning','Øjenbryn og hår begynder at vokse','Fosteret mærker lys og lyd','Urinproduktion øget'] },
-  16: { emoji:'🥑', size:'Avocado · ~117 mm',    facts:['Finmotorik udvikles','Fosteret kan høre din stemme','Skelet synligt på røntgen','Tryghedsscanning kan foretages fra nu'] },
-  18: { emoji:'🥭', size:'Mango · ~142 mm',      facts:['Bevægelser kan mærkes (quickening)','Fosteret sover og vågner','Myelinisering af nervesystem begynder','Kønsscanning mulig'] },
-  20: { emoji:'🍌', size:'Banan · ~165 mm',      facts:['Halvvejs! 20 uger','Mærkbare spark','Fosteret sluger fostervandsv','Læberne er fuldt udviklede','Detaljeret anatomi-scanning tilbydes'] },
-  24: { emoji:'🌽', size:'Majskolbe · ~210 mm',  facts:['Levedygtighed udenfor livmoder fra ~24 uger','Lunger udvikler surfaktant','Øjne kan åbne','Hørelse fuldt udviklet','Vækstscanning kan tilbydes'] },
-  28: { emoji:'🥦', size:'Broccoli · ~250 mm',   facts:['3. trimester starter','Hjernen vokser hurtigt','Fosteret kan drømme (REM-søvn)','Immunsystem udvikles','Antistofoverførsel fra mor starter'] },
-  32: { emoji:'🥥', size:'Kokosnød · ~280 mm',   facts:['Fosteret fylder det meste af livmoderen','Fed deponeres under huden','Negle er fuldt udviklede','Lunger næsten modne','Fosteret vejer ~1,7 kg'] },
-  36: { emoji:'🍍', size:'Ananas · ~470 mm',     facts:['Fosteret vender sig typisk med hovedet nedad','Op/ned-scanning tilbydes fra uge 35','Lunger modne nok til selvstændig vejrtrækning','Fosteret vejer ~2,6 kg','Fuldtid fra uge 37'] },
-  40: { emoji:'🎃', size:'Lille vandmelon · ~510 mm', facts:['Termin!','Fosteret vejer ~3,3 kg','Alle systemer klar til liv udenfor','Placenta begynder at aftage','Fødsel kan induceres ved 42 uger'] },
+  4:  { emoji:'🌸', size:'Valmuefrø · ~1 mm',   facts:['Implantation fuldføres i livmoderen','HCG begynder at stige og kan nu detekteres','Moderkagen begynder at dannes','Embryo er en blastocyst på ~200 celler'] },
+  5:  { emoji:'🌱', size:'Sesamfrø · ~2 mm',     facts:['Hjertet begynder at slå (~80–85 slag/min)','Neural tube (rygrad og hjerne) anlægges','Øje- og øreanlæg dannes','HCG stiger hurtigt — kvalme kan starte'] },
+  6:  { emoji:'🫘', size:'Linse · ~4 mm',        facts:['Hjerteslag kan ses på ultralyd','Hjernen deler sig i tre dele','Arm- og benknopper vokser frem','Ansigtsanlæg synlige'] },
+  7:  { emoji:'🫐', size:'Blåbær · ~10 mm',      facts:['Alle vitale organer anlægges','Håndfolderne er synlige','Tarmsystemet begynder at dannes','Hjertet har fire kamre'] },
+  8:  { emoji:'🫒', size:'Olive · ~16 mm',       facts:['Embryofasen slutter — nu kaldet foster','Alle organer er til stede','Tænder og tungeanlæg dannes','Hjerteslag ~150–170 slag/min'] },
+  9:  { emoji:'🍇', size:'Vindrue · ~23 mm',     facts:['Fingre og tæer er adskilte','Knogler begynder at hærde','Fosteret kan svaje og strække sig','Bevægelse kan ses på scanning'] },
+  10: { emoji:'🍓', size:'Jordbær · ~31 mm',     facts:['Nakkefoldscanning tilbydes uge 11–13+6','Alle vitale systemer funktionsdygtige','Fosteret kan sparke og stille sig','Knoglerne kan ses på scanning'] },
+  11: { emoji:'🍋', size:'Lime · ~41 mm',        facts:['Nakkefoldscanning anbefales nu (uge 11–13+6)','CRL bruges til præcis terminsfastsættelse','Fingernegle begynder at vokse','Nyrer producerer urin'] },
+  12: { emoji:'🍈', size:'Blomme · ~53 mm',      facts:['1. trimester afsluttes','Risiko for abort falder markant','Fosteret kan åbne og lukke hænderne','Reflekser er til stede'] },
+  13: { emoji:'🍑', size:'Fersken · ~74 mm',     facts:['2. trimester starter','Morkagen overtager hormonproduktionen','Udtalt vækstspurt','Fosteret kan sutte på tommelfingeren'] },
+  14: { emoji:'🍊', size:'Appelsin · ~85 mm',    facts:['Køn kan evt. ses på scanning','Øjenbryn og hår begynder at vokse','Fosteret mærker lys og lyd'] },
+  16: { emoji:'🥑', size:'Avocado · ~117 mm',    facts:['Finmotorik udvikles','Fosteret kan høre din stemme','Skelet synligt på røntgen'] },
+  18: { emoji:'🥭', size:'Mango · ~142 mm',      facts:['Bevægelser kan mærkes (quickening)','Fosteret sover og vågner','Myelinisering af nervesystem begynder'] },
+  20: { emoji:'🍌', size:'Banan · ~165 mm',      facts:['Halvvejs! 20 uger','Mærkbare spark','Detaljeret anatomi-scanning tilbydes'] },
+  24: { emoji:'🌽', size:'Majskolbe · ~210 mm',  facts:['Levedygtighed udenfor livmoder fra ~24 uger','Lunger udvikler surfaktant','Øjne kan åbne'] },
+  28: { emoji:'🥦', size:'Broccoli · ~250 mm',   facts:['3. trimester starter','Hjernen vokser hurtigt','Fosteret kan drømme (REM-søvn)'] },
+  32: { emoji:'🥥', size:'Kokosnød · ~280 mm',   facts:['Fosteret fylder det meste af livmoderen','Fed deponeres under huden','Fosteret vejer ~1,7 kg'] },
+  36: { emoji:'🍍', size:'Ananas · ~470 mm',     facts:['Fosteret vender sig typisk med hovedet nedad','Lunger modne nok til selvstændig vejrtrækning','Fosteret vejer ~2,6 kg'] },
+  40: { emoji:'🎀', size:'Lille vandmelon · ~510 mm', facts:['Termin!','Fosteret vejer ~3,3 kg','Alle systemer klar til liv udenfor'] },
 };
 
 function getWeekData(w) {
@@ -565,308 +935,48 @@ function getWeekData(w) {
   return weekData[best];
 }
 
-// ══════════════════════════════════════════
-// HCG MATH (Barnhart)
-// ══════════════════════════════════════════
-function calcDoublingTime(m1, m2) {
-  const hrs = (new Date(m2.date) - new Date(m1.date)) / 3600000;
-  const T = hrs * Math.LN2 / Math.log(m2.hcg / m1.hcg);
-  return T;
-}
-
-function projectHCG(baseHcg, baseDate, targetDate, T) {
-  const hrs = (new Date(targetDate) - new Date(baseDate)) / 3600000;
-  return baseHcg * Math.pow(2, hrs / T);
-}
-
-function getT() {
-  const sorted = [...measurements].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if (sorted.length < 2) return 101;
-  const last2 = sorted.slice(-2);
-  return calcDoublingTime(last2[0], last2[1]);
-}
-
-// ══════════════════════════════════════════
-// GESTATIONAL AGE
-// ══════════════════════════════════════════
-function gaFromLMP(lmp, date) {
-  const days = Math.round((new Date(date) - new Date(lmp)) / 86400000);
-  return { weeks: Math.floor(days/7), days: days%7, total: days };
-}
-
-function fmtGA(ga) { return `${ga.weeks}+${ga.days}`; }
-
-function dateAddDays(d, n) {
-  const r = new Date(d); r.setDate(r.getDate()+n); return r;
-}
-
-function fmtDate(d) {
-  return new Date(d).toLocaleDateString('da-DK',{day:'numeric',month:'short',year:'numeric'});
-}
-
-function fmtDateShort(d) {
-  return new Date(d).toLocaleDateString('da-DK',{day:'numeric',month:'short'});
-}
-
-function daysUntil(d) {
-  return Math.round((new Date(d) - TODAY) / 86400000);
-}
-
-// ══════════════════════════════════════════
-// RENDER HCG CHART
-// ══════════════════════════════════════════
-function renderChart() {
-  const svg = document.getElementById('hcg-svg');
-  const T = getT();
-  const sorted = [...measurements].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const base = sorted[sorted.length-1];
-
-  // Build projection up to week 12 (T+56days from LMP)
-  const projPoints = [];
-  const startProj = new Date(base.date);
-  const endProj = new Date(LMP); endProj.setDate(endProj.getDate() + 12*7);
-  for (let d = new Date(startProj); d <= endProj; d.setDate(d.getDate()+1)) {
-    projPoints.push({ date: new Date(d), hcg: projectHCG(base.hcg, base.date, d, T) });
-  }
-
-  // All HCG values for scale
-  const allHcg = [...sorted.map(m=>m.hcg), ...projPoints.map(p=>p.hcg)];
-  const maxHcg = Math.max(...allHcg, 300000);
-  const minDate = new Date(sorted[0].date);
-  const maxDate = endProj;
-  const totalDays = (maxDate - minDate) / 86400000;
-
-  const PAD = {l:38, r:12, t:12, b:22};
-  const W = 340, H = 160;
-  const cw = W-PAD.l-PAD.r, ch = H-PAD.t-PAD.b;
-
-  function xPos(date) {
-    const d = (new Date(date)-minDate)/86400000;
-    return PAD.l + (d/totalDays)*cw;
-  }
-
-  function yPos(hcg) {
-    // log scale
-    const logMax = Math.log(maxHcg), logMin = Math.log(Math.max(1, sorted[0].hcg*0.5));
-    const logV = Math.log(Math.max(1,hcg));
-    return PAD.t + ch - ((logV-logMin)/(logMax-logMin))*ch;
-  }
-
-  // Grid y values
-  const gridVals = [100,500,1000,5000,10000,50000,100000,200000];
-
-  let out = `<defs>
-    <linearGradient id="ag2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#c25068" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#c25068" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="pg2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4fa882" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#4fa882" stop-opacity="0"/>
-    </linearGradient>
-  </defs>`;
-
-  // Grid lines
-  for (const gv of gridVals) {
-    if (gv > maxHcg) continue;
-    const y = yPos(gv);
-    if (y < PAD.t || y > H-PAD.b) continue;
-    const lbl = gv >= 1000 ? (gv/1000)+'k' : gv;
-    out += `<line x1="${PAD.l}" y1="${y.toFixed(1)}" x2="${W-PAD.r}" y2="${y.toFixed(1)}" stroke="#f0e8ec" stroke-width="1"/>`;
-    out += `<text x="${PAD.l-3}" y="${(y+3).toFixed(1)}" text-anchor="end" fill="#c8a0b0" font-size="6" font-family="monospace">${lbl}</text>`;
-  }
-
-  // Measured area
-  const measPts = sorted.map(m=>`${xPos(m.date).toFixed(1)},${yPos(m.hcg).toFixed(1)}`).join(' ');
-  const measFirst = sorted[0], measLast = sorted[sorted.length-1];
-  out += `<polygon points="${measPts} ${xPos(measLast.date).toFixed(1)},${(H-PAD.b)} ${xPos(measFirst.date).toFixed(1)},${(H-PAD.b)}" fill="url(#ag2)"/>`;
-
-  // Proj area
-  const ppStr = projPoints.map(p=>`${xPos(p.date).toFixed(1)},${yPos(p.hcg).toFixed(1)}`).join(' ');
-  out += `<polygon points="${ppStr} ${xPos(endProj).toFixed(1)},${(H-PAD.b)} ${xPos(sorted[sorted.length-1].date).toFixed(1)},${(H-PAD.b)}" fill="url(#pg2)"/>`;
-
-  // Proj line
-  out += `<polyline points="${ppStr}" fill="none" stroke="#4fa882" stroke-width="1.8" stroke-dasharray="4,3" stroke-linecap="round"/>`;
-
-  // Measured line
-  out += `<polyline points="${measPts}" fill="none" stroke="#c25068" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-
-  // Today marker
-  const todayX = xPos(TODAY);
-  out += `<line x1="${todayX.toFixed(1)}" y1="${PAD.t}" x2="${todayX.toFixed(1)}" y2="${H-PAD.b}" stroke="#4fa882" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>`;
-  out += `<text x="${(todayX+2).toFixed(1)}" y="${(PAD.t+8)}" fill="#4fa882" font-size="6.5" font-family="monospace">i dag</text>`;
-
-  // Week markers on x axis (uge 6, 8, 10, 12)
-  for (const wk of [6,8,10,12]) {
-    const wkDate = new Date(LMP); wkDate.setDate(wkDate.getDate()+wk*7);
-    if (wkDate < minDate || wkDate > maxDate) continue;
-    const wx = xPos(wkDate);
-    out += `<text x="${wx.toFixed(1)}" y="${H-5}" text-anchor="middle" fill="#9a8490" font-size="6" font-family="monospace">U${wk}</text>`;
-    out += `<line x1="${wx.toFixed(1)}" y1="${H-PAD.b}" x2="${wx.toFixed(1)}" y2="${H-PAD.b+3}" stroke="#c8a0b0" stroke-width="1"/>`;
-  }
-
-  // Data points
-  for (const m of sorted) {
-    const cx = xPos(m.date), cy = yPos(m.hcg);
-    out += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="4.5" fill="#fdf3f5" stroke="#c25068" stroke-width="2.5"/>`;
-    out += `<text x="${cx.toFixed(1)}" y="${(cy-7).toFixed(1)}" text-anchor="middle" fill="#1e1018" font-size="7.5" font-family="monospace" font-weight="500">${m.hcg}</text>`;
-  }
-
-  // Today proj point
-  const todayHcg = projectHCG(base.hcg, base.date, TODAY, T);
-  const ty2 = yPos(todayHcg);
-  out += `<circle cx="${todayX.toFixed(1)}" cy="${ty2.toFixed(1)}" r="4" fill="#fdf3f5" stroke="#4fa882" stroke-width="2"/>`;
-  out += `<text x="${todayX.toFixed(1)}" y="${(ty2-7).toFixed(1)}" text-anchor="middle" fill="#4fa882" font-size="7" font-family="monospace">~${Math.round(todayHcg)}</text>`;
-
-  svg.innerHTML = out;
-}
-
-// ══════════════════════════════════════════
-// RENDER PROJECTION TABLE
-// ══════════════════════════════════════════
-function renderTable() {
-  const T = getT();
-  const sorted = [...measurements].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const base = sorted[sorted.length-1];
-
-  const rows = [];
-  // From first measurement + projections
-  const projDays = [0, 1, 3, 5, 7, 10, 14, 21, 28, 42, 56];
-  for (const d of projDays) {
-    const dt = new Date(base.date); dt.setDate(dt.getDate()+d);
-    const hcg = d===0 ? base.hcg : projectHCG(base.hcg, base.date, dt, T);
-    const ga = gaFromLMP(LMP, dt);
-    const isToday = dt.toDateString() === TODAY.toDateString();
-    const isMeasured = measurements.some(m => new Date(m.date).toDateString() === dt.toDateString());
-    rows.push({ dt, hcg: Math.round(hcg), ga, isToday, isMeasured, daysAhead: d });
-  }
-
-  let html = `<thead><tr><th>Dato</th><th>Proj. HCG</th><th>Uge</th><th>Status</th></tr></thead><tbody>`;
-  for (const r of rows) {
-    const isToday = r.isToday;
-    html += `<tr${isToday?' class="today"':''}>
-      <td>${isToday?'<span class="tdot"></span>':''}${fmtDateShort(r.dt)}</td>
-      <td class="hv">${r.hcg.toLocaleString('da-DK')}${r.daysAhead>0?'*':''}</td>
-      <td class="week-lbl">${fmtGA(r.ga)}</td>
-      <td style="font-size:.4rem;color:var(--muted);">${isToday?'← i dag':r.isMeasured?'Målt':''}</td>
-    </tr>`;
-  }
-  html += '</tbody>';
-  document.getElementById('proj-table').innerHTML = html;
-}
-
-// ══════════════════════════════════════════
-// RENDER STATS
-// ══════════════════════════════════════════
-function renderStats() {
-  const T = getT();
-  const sorted = [...measurements].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if (sorted.length >= 2) {
-    const first = sorted[0], last = sorted[sorted.length-1];
-    const rise = Math.round((last.hcg/first.hcg-1)*100);
-    document.getElementById('st-doubling').textContent = Math.round(T);
-    document.getElementById('st-rise').textContent = rise;
-    document.getElementById('st-last').textContent = last.hcg;
-
-    // Update hero
-    const todayProj = Math.round(projectHCG(last.hcg, last.date, TODAY, T));
-    document.getElementById('h-proj').textContent = todayProj;
-    document.getElementById('h-v1').textContent = first.hcg;
-    document.getElementById('h-d1').textContent = new Date(first.date).toLocaleDateString('da-DK',{day:'numeric',month:'short'});
-    document.getElementById('h-v2').textContent = last.hcg;
-    document.getElementById('h-d2').textContent = new Date(last.date).toLocaleDateString('da-DK',{day:'numeric',month:'short'});
-  }
-}
-
-// ══════════════════════════════════════════
-// MEASUREMENT ROWS
-// ══════════════════════════════════════════
-function renderMeasRows() {
-  const list = document.getElementById('meas-list');
-  list.innerHTML = '';
-  measurements.forEach((m, i) => {
-    const row = document.createElement('div');
-    row.className = 'mrow';
-    row.innerHTML = `
-      <input class="inp" type="date" value="${m.date}" onchange="measurements[${i}].date=this.value">
-      <input class="inp" type="number" value="${m.hcg}" placeholder="HCG" onchange="measurements[${i}].hcg=+this.value">
-      <button class="mdel" onclick="delMeas(${i})">✕</button>`;
-    list.appendChild(row);
-  });
-}
-
-function addMeasRow() {
-  measurements.push({ date: new Date().toISOString().split('T')[0], hcg: '' });
-  renderMeasRows();
-}
-
-function delMeas(i) {
-  if (measurements.length <= 1) return;
-  measurements.splice(i, 1);
-  renderMeasRows();
-}
-
-function recalc() {
-  measurements = measurements.filter(m => m.hcg && m.date);
-  measurements.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  renderMeasRows();
-  renderStats();
-  renderChart();
-  renderTable();
-}
-
-// ══════════════════════════════════════════
-// WEEK FOR WEEK
-// ══════════════════════════════════════════
 function renderWeeksTab() {
   const scroller = document.getElementById('weeks-scroller');
   scroller.innerHTML = '';
-  const currentGA = gaFromLMP(LMP, TODAY);
-  const currentW = currentGA.weeks;
-
+  const cw = STATE.gaWeeks;
   for (let w = 4; w <= 42; w++) {
     const chip = document.createElement('div');
-    chip.className = 'wk-chip' + (w === currentW ? ' active current' : '');
+    chip.className = 'wk-chip' + (w === cw ? ' active' : '');
     chip.textContent = `U${w}`;
     chip.onclick = () => showWeekDetail(w);
     scroller.appendChild(chip);
   }
+  showWeekDetail(cw);
 
-  showWeekDetail(currentW);
+  // Scroll current week into view
+  setTimeout(() => {
+    const chips = scroller.querySelectorAll('.wk-chip');
+    const idx = cw - 4;
+    if (chips[idx]) chips[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 100);
+
   renderFullWeekTrack();
 }
 
 function showWeekDetail(w) {
-  // Update chip active state
-  document.querySelectorAll('.wk-chip').forEach((c,i)=>{
-    c.classList.toggle('active', i+4===w);
-  });
-
+  document.querySelectorAll('.wk-chip').forEach((c, i) => c.classList.toggle('active', i + 4 === w));
   const wd = getWeekData(w);
   document.getElementById('wd-week-num').textContent = `Uge ${w}`;
   document.getElementById('wd-size').textContent = wd.size;
   document.getElementById('wd-emoji').textContent = wd.emoji;
-
-  const ul = document.getElementById('wd-facts');
-  ul.innerHTML = wd.facts.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('wd-facts').innerHTML = wd.facts.map(f => `<li>${f}</li>`).join('');
 }
 
 function renderFullWeekTrack() {
   const track = document.getElementById('wtrack-full');
   track.innerHTML = '';
-  const currentGA = gaFromLMP(LMP, TODAY);
-  const cw = currentGA.weeks;
-
-  // Show trimesters: 3 representative markers per trimester
-  const markers = [1,4,8,12,13,16,20,26,27,32,36,40,42];
-  for (const w of markers) {
+  const cw = STATE.gaWeeks;
+  for (const w of [4,6,8,10,12,14,16,18,20,24,28,32,36,40,42]) {
     const el = document.createElement('div');
-    const isPast = w < cw;
-    const isNow = w === cw || (w <= cw && w > cw-4);
     let cls = 'ws';
     if (w < cw) cls += ' past';
-    else if (w === cw) cls += ' now';
-    else if ([11,20].includes(w)) cls += ' future-scan';
+    else if (w <= cw + 1) cls += ' now';
+    else if ([11, 20].includes(w)) cls += ' future-scan';
     else if (w === 40) cls += ' future-term';
     el.className = cls;
     el.textContent = `U${w}`;
@@ -874,101 +984,105 @@ function renderFullWeekTrack() {
   }
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════
 // IMPORTANT DATES
-// ══════════════════════════════════════════
-let customDates = [];
-
+// ════════════════════════════════════
 function calcDates() {
   const lmpVal = document.getElementById('lmp-date').value;
   const termVal = document.getElementById('term-date').value;
-  if (!lmpVal && !termVal) return;
 
-  const lmp = lmpVal ? new Date(lmpVal) : new Date(new Date(termVal)-280*86400000);
-  const term = termVal ? new Date(termVal) : new Date(lmp.getTime()+280*86400000);
+  const lmp = lmpVal ? parseDate(lmpVal) : getLMP();
+  const term = termVal ? parseDate(termVal) : getTERM();
 
   const importantDates = [
-    { name:'Første dag i sidste menstruation', date: lmp, color:'#9a8490', note:'Startpunkt for gestationsalder' },
-    { name:'Befrugtning (estimeret)', date: new Date(lmp.getTime()+14*86400000), color:'#e8899a', note:'±2–3 dage' },
-    { name:'Tidlig scanning mulig fra', date: new Date(lmp.getTime()+35*86400000), color:'#c25068', note:'Uge 5+0 — bekræfter gestationsalder' },
-    { name:'Nakkefoldscanning (uge 11–13+6)', date: new Date(lmp.getTime()+11*7*86400000), color:'#9b6b9e', note:'Fastsætter officiel termin + trisomiscreening' },
-    { name:'Dobbelttests blodprøve', date: new Date(lmp.getTime()+11*7*86400000), color:'#9b6b9e', note:'Samme tid som nakkefold' },
-    { name:'2. trimester starter', date: new Date(lmp.getTime()+13*7*86400000), color:'#4fa882', note:'Uge 13+0' },
-    { name:'Misdannelsesscanning (uge 18–20)', date: new Date(lmp.getTime()+18*7*86400000), color:'#4fa882', note:'Detaljeret anatomi-scanning' },
-    { name:'3. trimester starter', date: new Date(lmp.getTime()+27*7*86400000), color:'#c8974a', note:'Uge 27+0' },
-    { name:'Terminsdato (40 uger)', date: term, color:'#c25068', note:'± 2 uger er normalt' },
-    { name:'Senest induceret ved', date: new Date(term.getTime()+14*86400000), color:'#c8974a', note:'Uge 42 — efter aftale med læge' },
+    { name: 'Første dag i sidste menstruation', date: lmp, color: '#9a8490', note: 'Startpunkt for gestationsalder' },
+    { name: 'Befrugtning (estimeret)', date: new Date(lmp.getTime() + 14*86400000), color: '#e8899a', note: '± 2–3 dage' },
+    { name: 'Tidlig scanning mulig fra', date: new Date(lmp.getTime() + 35*86400000), color: '#c25068', note: 'Uge 5+0 — bekræfter gestationsalder' },
+    { name: 'Nakkefoldscanning (uge 11–13+6)', date: new Date(lmp.getTime() + 11*7*86400000), color: '#9b6b9e', note: 'Fastsætter officiel termin + trisomiscreening' },
+    { name: 'Dobbelttests blodprøve', date: new Date(lmp.getTime() + 11*7*86400000), color: '#9b6b9e', note: 'Samme tid som nakkefold' },
+    { name: '2. trimester starter', date: new Date(lmp.getTime() + 13*7*86400000), color: '#4fa882', note: 'Uge 13+0' },
+    { name: 'Misdannelsesscanning (uge 18–20)', date: new Date(lmp.getTime() + 18*7*86400000), color: '#4fa882', note: 'Detaljeret anatomi-scanning' },
+    { name: '3. trimester starter', date: new Date(lmp.getTime() + 27*7*86400000), color: '#c8974a', note: 'Uge 27+0' },
+    { name: 'Terminsdato (40 uger)', date: term, color: '#c25068', note: '± 2 uger er normalt' },
+    { name: 'Senest induceret ved', date: new Date(term.getTime() + 14*86400000), color: '#c8974a', note: 'Uge 42 — efter aftale med læge' },
   ];
 
   const list = document.getElementById('dates-list');
   list.innerHTML = '';
-
   for (const item of importantDates) {
     const ga = gaFromLMP(lmp, item.date);
     const diff = daysUntil(item.date);
     const isPast = diff < 0;
     const isSoon = diff >= 0 && diff <= 30;
-
     const el = document.createElement('div');
     el.className = 'date-item';
     el.innerHTML = `
       <div class="date-dot" style="background:${item.color};"></div>
       <div class="date-body">
         <div class="date-name">${item.name}</div>
-        <div class="date-val">${fmtDate(item.date)}</div>
+        <div class="date-val">${fmtDateDA(item.date)}</div>
         <div class="date-week">Uge ${fmtGA(ga)} · ${item.note}</div>
       </div>
-      <div class="date-days ${isPast?'past':isSoon?'soon':''}">${isPast?`${Math.abs(diff)}d siden`:diff===0?'I dag':`Om ${diff}d`}</div>`;
+      <div class="date-days ${isPast?'past-col':isSoon?'soon':''}">${isPast?`${Math.abs(diff)}d siden`:diff===0?'I dag':`Om ${diff}d`}</div>`;
     list.appendChild(el);
   }
+
+  // Save LMP/term to state
+  if (lmpVal) STATE.lmp = lmpVal;
+  if (termVal) STATE.term = termVal;
+  saveState();
 }
 
 function addCustomDate() {
   const d = document.getElementById('cust-date').value;
-  const n = document.getElementById('cust-name').value;
+  const n = document.getElementById('cust-name').value.trim();
   if (!d || !n) return;
-  customDates.push({date:d, name:n});
+  STATE.customDates.push({ date: d, name: n });
+  saveState();
   renderCustomDates();
-  document.getElementById('cust-date').value='';
-  document.getElementById('cust-name').value='';
+  document.getElementById('cust-date').value = '';
+  document.getElementById('cust-name').value = '';
 }
 
 function renderCustomDates() {
   const list = document.getElementById('custom-dates-list');
   list.innerHTML = '';
-  for (const cd of customDates) {
-    const diff = daysUntil(cd.date);
+  for (const cd of STATE.customDates) {
+    const diff = daysUntil(parseDate(cd.date));
     const isPast = diff < 0;
     const el = document.createElement('div');
     el.className = 'date-item';
-    el.style.marginBottom = '8px';
     el.innerHTML = `
       <div class="date-dot" style="background:var(--rose);"></div>
       <div class="date-body">
         <div class="date-name">${cd.name}</div>
-        <div class="date-val">${fmtDate(cd.date)}</div>
+        <div class="date-val">${fmtDateDA(parseDate(cd.date))}</div>
       </div>
-      <div class="date-days ${isPast?'past':''}">${isPast?`${Math.abs(diff)}d siden`:diff===0?'I dag':`Om ${diff}d`}</div>`;
+      <div class="date-days ${isPast?'past-col':''}">${isPast?`${Math.abs(diff)}d siden`:diff===0?'I dag':`Om ${diff}d`}</div>`;
     list.appendChild(el);
   }
 }
 
-// ══════════════════════════════════════════
+// ════════════════════════════════════
 // CALCULATOR
-// ══════════════════════════════════════════
+// ════════════════════════════════════
 function toggleCalc(mode) {
-  document.getElementById('calc-term-panel').style.display = mode==='term'?'':'none';
-  document.getElementById('calc-lmp-panel').style.display  = mode==='lmp'?'':'none';
-  document.getElementById('tog-term').classList.toggle('active', mode==='term');
-  document.getElementById('tog-lmp').classList.toggle('active',  mode==='lmp');
+  document.getElementById('calc-term-panel').style.display = mode === 'term' ? '' : 'none';
+  document.getElementById('calc-lmp-panel').style.display  = mode === 'lmp'  ? '' : 'none';
+  document.getElementById('tog-term').classList.toggle('active', mode === 'term');
+  document.getElementById('tog-lmp').classList.toggle('active',  mode === 'lmp');
 }
 
 function calcByTerm() {
-  const term = document.getElementById('calc-term-inp').value;
-  const forDate = document.getElementById('calc-term-for').value;
-  if (!term || !forDate) return;
-  const lmpCalc = new Date(new Date(term).getTime()-280*86400000);
-  const ga = gaFromLMP(lmpCalc, forDate);
+  const termStr = document.getElementById('calc-term-inp').value;
+  const forStr  = document.getElementById('calc-term-for').value;
+  if (!termStr || !forStr) return;
+
+  const term    = parseDate(termStr);
+  const forDate = parseDate(forStr);
+  // LMP = term - 280 days
+  const lmpCalc = new Date(term.getTime() - 280 * 86400000);
+  const ga      = gaFromLMP(lmpCalc, forDate);
   const dToTerm = daysUntil(term);
   const trimester = ga.weeks < 13 ? '1. trimester' : ga.weeks < 27 ? '2. trimester' : '3. trimester';
   const wd = getWeekData(ga.weeks);
@@ -976,23 +1090,26 @@ function calcByTerm() {
   const box = document.getElementById('res-term');
   box.className = 'result-box show';
   box.innerHTML = `
-    <div class="rb-title">Resultat for ${fmtDate(forDate)}</div>
+    <div class="rb-title">Gestationsalder den ${fmtDateDA(forDate)}</div>
     <div class="rb-week">${fmtGA(ga)}</div>
     <div class="rb-sub">${trimester} · ${wd.emoji} ${wd.size}</div>
     <div class="rb-grid">
-      <div class="rb-item"><div class="rb-lbl">Til termin</div><div class="rb-val">${dToTerm>=0?`${dToTerm} dage`:`${Math.abs(dToTerm)} dage over`}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Termin</div><div class="rb-val">${fmtDate(term)}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Beregnet LMP</div><div class="rb-val">${fmtDate(lmpCalc)}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Metode</div><div class="rb-val" style="font-size:.55rem;">Naegeles regel</div></div>
+      <div class="rb-item"><div class="rb-lbl">Til termin</div><div class="rb-val">${dToTerm >= 0 ? `${dToTerm} dage` : `${Math.abs(dToTerm)}d over`}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Termin</div><div class="rb-val">${fmtDateDA(term)}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Beregnet LMP</div><div class="rb-val">${fmtDateDA(lmpCalc)}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Metode</div><div class="rb-val" style="font-size:.5rem;">Term − 280 dage</div></div>
     </div>`;
 }
 
 function calcByLMP() {
-  const lmp = document.getElementById('calc-lmp-inp').value;
-  const forDate = document.getElementById('calc-lmp-for').value;
-  if (!lmp || !forDate) return;
-  const ga = gaFromLMP(lmp, forDate);
-  const termCalc = new Date(new Date(lmp).getTime()+280*86400000);
+  const lmpStr  = document.getElementById('calc-lmp-inp').value;
+  const forStr  = document.getElementById('calc-lmp-for').value;
+  if (!lmpStr || !forStr) return;
+
+  const lmpCalc = parseDate(lmpStr);
+  const forDate = parseDate(forStr);
+  const ga      = gaFromLMP(lmpCalc, forDate);
+  const termCalc = new Date(lmpCalc.getTime() + 280 * 86400000);
   const dToTerm = daysUntil(termCalc);
   const trimester = ga.weeks < 13 ? '1. trimester' : ga.weeks < 27 ? '2. trimester' : '3. trimester';
   const wd = getWeekData(ga.weeks);
@@ -1000,69 +1117,129 @@ function calcByLMP() {
   const box = document.getElementById('res-lmp');
   box.className = 'result-box show';
   box.innerHTML = `
-    <div class="rb-title">Resultat for ${fmtDate(forDate)}</div>
+    <div class="rb-title">Gestationsalder den ${fmtDateDA(forDate)}</div>
     <div class="rb-week">${fmtGA(ga)}</div>
     <div class="rb-sub">${trimester} · ${wd.emoji} ${wd.size}</div>
     <div class="rb-grid">
-      <div class="rb-item"><div class="rb-lbl">Estimeret termin</div><div class="rb-val">${fmtDate(termCalc)}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Til termin</div><div class="rb-val">${dToTerm>=0?`${dToTerm} dage`:`${Math.abs(dToTerm)} dage over`}</div></div>
-      <div class="rb-item"><div class="rb-lbl">LMP</div><div class="rb-val">${fmtDate(lmp)}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Metode</div><div class="rb-val" style="font-size:.55rem;">Naegeles +280d</div></div>
+      <div class="rb-item"><div class="rb-lbl">Estimeret termin</div><div class="rb-val">${fmtDateDA(termCalc)}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Til termin</div><div class="rb-val">${dToTerm >= 0 ? `${dToTerm} dage` : `${Math.abs(dToTerm)}d over`}</div></div>
+      <div class="rb-item"><div class="rb-lbl">LMP</div><div class="rb-val">${fmtDateDA(lmpCalc)}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Metode</div><div class="rb-val" style="font-size:.5rem;">Naegeles regel +280d</div></div>
     </div>`;
 }
 
 function calcHCG() {
-  const a = +document.getElementById('hcg-a').value;
-  const b = +document.getElementById('hcg-b').value;
-  const t = +document.getElementById('hcg-t').value;
-  if (!a||!b||!t||b<=a) { alert('Tjek dine værdier — HCG 2 skal være større end HCG 1'); return; }
-  const T = t*Math.LN2/Math.log(b/a);
-  const rise = Math.round((b/a-1)*100);
-  const expected48 = Math.round(a*Math.pow(2,48/T));
-  const expected72 = Math.round(a*Math.pow(2,72/T));
-  const verdict = T < 48 ? '✓ Fremragende stigning' : T < 72 ? '✓ Normal stigning' : T < 96 ? '→ Acceptabel stigning' : '⚠ Langsom stigning — kontakt læge';
-  const verdictColor = T < 72 ? 'var(--good)' : T < 96 ? 'var(--warn)' : 'var(--rose-deep)';
+  const aVal = document.getElementById('hcg-a').value.trim();
+  const bVal = document.getElementById('hcg-b').value.trim();
+  const tVal = document.getElementById('hcg-t').value.trim();
+
+  const a = parseFloat(aVal);
+  const b = parseFloat(bVal);
+  const t = parseFloat(tVal);
+
+  if (!aVal || !bVal || !tVal || isNaN(a) || isNaN(b) || isNaN(t)) {
+    showHCGError('Udfyld alle tre felter.'); return;
+  }
+  if (a <= 0 || b <= 0 || t <= 0) {
+    showHCGError('Alle værdier skal være større end 0.'); return;
+  }
+  if (b === a) {
+    showHCGError('HCG er uændret — ingen stigning eller fald at beregne.'); return;
+  }
+
+  const T = calcT(a, b, t);
+  const rise = ((b / a - 1) * 100).toFixed(1);
+  const proj48 = Math.round(a * Math.pow(2, 48 / T));
+  const proj72 = Math.round(a * Math.pow(2, 72 / T));
+
+  let verdict, verdictColor;
+  if (b < a) {
+    verdict = '⚠ Faldende HCG — kontakt læge'; verdictColor = 'var(--rose-deep)';
+  } else if (T < 48) {
+    verdict = '✓ Fremragende stigning'; verdictColor = 'var(--good)';
+  } else if (T < 72) {
+    verdict = '✓ Normal stigning'; verdictColor = 'var(--good)';
+  } else if (T < 96) {
+    verdict = '→ Acceptabel — tæt opfølgning anbefales'; verdictColor = 'var(--warn)';
+  } else {
+    verdict = '⚠ Langsom stigning — kontakt læge'; verdictColor = 'var(--rose-deep)';
+  }
 
   const box = document.getElementById('res-hcg');
   box.className = 'result-box show';
   box.innerHTML = `
     <div class="rb-title">Beregningsresultat</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--rose-deep);line-height:1;">${Math.round(T)} timer</div>
-    <div style="font-size:.52rem;color:${verdictColor};margin-top:4px;font-weight:500;">${verdict}</div>
-    <div class="rb-grid" style="margin-top:10px;">
-      <div class="rb-item"><div class="rb-lbl">Stigning</div><div class="rb-val">+${rise}%</div></div>
-      <div class="rb-item"><div class="rb-lbl">Norm (48–72t)</div><div class="rb-val" style="font-size:.6rem;">Under 72t = normal</div></div>
-      <div class="rb-item"><div class="rb-lbl">Forventet ved 48t</div><div class="rb-val">~${expected48.toLocaleString('da-DK')}</div></div>
-      <div class="rb-item"><div class="rb-lbl">Forventet ved 72t</div><div class="rb-val">~${expected72.toLocaleString('da-DK')}</div></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--rose-deep);line-height:1;">${Math.round(Math.abs(T))} timer</div>
+    <div style="font-size:.5rem;color:${verdictColor};margin-top:4px;font-weight:500;">${verdict}</div>
+    <div class="rb-grid" style="margin-top:9px;">
+      <div class="rb-item"><div class="rb-lbl">Stigning</div><div class="rb-val">${b>a?'+':''}${rise}%</div></div>
+      <div class="rb-item"><div class="rb-lbl">Normal grænse</div><div class="rb-val" style="font-size:.5rem;">Under 72t</div></div>
+      <div class="rb-item"><div class="rb-lbl">Forventet ved 48t</div><div class="rb-val">~${proj48.toLocaleString('da-DK')}</div></div>
+      <div class="rb-item"><div class="rb-lbl">Forventet ved 72t</div><div class="rb-val">~${proj72.toLocaleString('da-DK')}</div></div>
     </div>
-    <div style="font-size:.4rem;color:var(--muted);margin-top:8px;line-height:1.7;">Ref: Barnhart KT et al., NEJM 2009 · Normal fordobling: &lt;72t (god), 72–96t (acceptabel)</div>`;
+    <div style="font-size:.38rem;color:var(--muted);margin-top:7px;line-height:1.7;">Ref: Barnhart KT et al., NEJM 2009 · Normal fordobling: &lt;72t (god), 72–96t (acceptabel)</div>`;
 }
 
-// ══════════════════════════════════════════
+function showHCGError(msg) {
+  const box = document.getElementById('res-hcg');
+  box.className = 'result-box show';
+  box.innerHTML = `<div style="font-size:.55rem;color:var(--rose-deep);">⚠ ${msg}</div>`;
+}
+
+// ════════════════════════════════════
+// COLLAPSIBLE SECTIONS
+// ════════════════════════════════════
+function toggleColl(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.coll-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+// ════════════════════════════════════
 // NAVIGATION
-// ══════════════════════════════════════════
+// ════════════════════════════════════
 function showPanel(id, btn) {
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
-
-  if (id==='weeks') renderWeeksTab();
-  if (id==='dates') calcDates();
+  if (id === 'weeks') renderWeeksTab();
+  if (id === 'dates') {
+    // Pre-fill with saved values
+    const lmpDate = STATE.lmp || toDateStr(getLMP());
+    const termDate = STATE.term || toDateStr(getTERM());
+    document.getElementById('lmp-date').value = lmpDate;
+    document.getElementById('term-date').value = termDate;
+    calcDates();
+    renderCustomDates();
+  }
+  if (id === 'calc') {
+    const termDate = STATE.term || toDateStr(getTERM());
+    document.getElementById('calc-term-inp').value = termDate;
+    document.getElementById('calc-term-for').value = TODAY_STR;
+    document.getElementById('calc-lmp-inp').value = STATE.lmp || toDateStr(getLMP());
+    document.getElementById('calc-lmp-for').value = TODAY_STR;
+  }
 }
 
-// ══════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════
-function init() {
-  renderMeasRows();
+// ════════════════════════════════════
+// RENDER ALL
+// ════════════════════════════════════
+function renderAll() {
+  updateHeroGA();
+  renderHeroStrip();
   renderStats();
   renderChart();
   renderTable();
+}
 
-  // Update hero GA
-  const ga = gaFromLMP(LMP, TODAY);
-  document.getElementById('hero-week').textContent = fmtGA(ga);
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+function init() {
+  renderMeasRows();
+  renderAll();
 }
 
 init();
